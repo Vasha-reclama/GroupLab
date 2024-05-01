@@ -1,5 +1,6 @@
-#include "RusRails.h"
+
 #include<iostream>
+#include "RusRails.h"
 using namespace std;
 
 Train::Train(int id, int arrivalTime, int stationId)

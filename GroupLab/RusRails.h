@@ -1,36 +1,6 @@
 #pragma once
 #include <vector>
 
-class Station {
-private:
-	unsigned int id;
-	char name[40] = {};
-	int con[5] = {-1,-1,-1,-1,-1}; // соединение, -1 означает, что нет связи
-	int dis[5] = {}; // дистанция, 0 означает, что нет связи
-public:
-	friend std::istream& operator >>(std::istream& in, Station& r);
-	friend std::ostream& operator <<(std::ostream& out, const Station& r);
-	void setId(int x);
-	int getId();
-	int* getCon();
-	int* getDis();
-	void getTrainsList();
-};
-
-class Path {
-private:
-	unsigned int id;
-	int trains[10] = {};//список прикрепленных поездов
-	int stations[20] = {};//маршрут
-public:
-	friend std::istream& operator >>(std::istream& in, Path& r);
-	friend std::ostream& operator <<(std::ostream& out, const Path& r);
-	void setId(int x);//
-	int getId();//получение Id маршрута
-	int* getTrains();//
-	int* getStations();
-};
-
 class Train {
 private:
 	unsigned id;
@@ -82,7 +52,6 @@ private:
 	int stationCount;
 
 public:
-	Route();
 	Route(int id, int* trains, int* stations, int trainCount, int stationCount);
 
 	friend std::istream& operator>>(std::istream& is, Route& route);
@@ -106,7 +75,6 @@ private:
 	int distances[5];
 
 public:
-	Station();
 	Station(int id, const char* name, int* adjacentStations, int* distances);
 
 	friend std::istream& operator>>(std::istream& is, Station& station);

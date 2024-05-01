@@ -1,8 +1,7 @@
-#include "RusRails.h"
-#include<iostream>
-using namespace std;
 
-Station::Station() : id(0) {}
+#include<iostream>
+#include "RusRails.h"
+using namespace std;
 
 Station::Station(int id, const char* name, int* adjacentStations, int* distances)
     : id(id) {
@@ -14,25 +13,32 @@ Station::Station(int id, const char* name, int* adjacentStations, int* distances
 }
 
 istream& operator>>(istream& is, Station& station) {
-    is >> station.id >> station.name;
+    cout << "Введите название станции: ";
+    is.ignore(); 
+    is.getline(station.name, 20);
+
+    cout << "Введите данные о смежных станциях и расстояниях до них:\n" << endl;
     for (int i = 0; i < 5; ++i) {
-        is >> station.adjacentStations[i] >> station.distances[i];
+        cout << "Смежная станция " << i + 1 << " ID: ";
+        is >> station.adjacentStations[i];
+        cout << "Расстояние до нее: " << i + 1 << ": ";
+        is >> station.distances[i];
     }
     return is;
 }
 
 ostream& operator<<(ostream& os, const Station& station) {
-    os << "Station ID: " << station.id << endl;
-    os << "Name: " << station.name << endl;
-    os << "Adjacent Stations: ";
+    os << "Идентификатор станции: " << station.id << "\n"
+        << "Название: " << station.name << "\n"
+        << "Смежные станции: ";
     for (int i = 0; i < 5; ++i) {
         os << station.adjacentStations[i] << " ";
     }
-    os << endl << "Distances: ";
+    os << "\nРасстояния: ";
     for (int i = 0; i < 5; ++i) {
         os << station.distances[i] << " ";
     }
-    os << endl;
+    os << "\n";
     return os;
 }
 

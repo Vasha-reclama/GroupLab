@@ -1,8 +1,7 @@
-#include "RusRails.h"
-#include<iostream>
-using namespace std;
 
-Route::Route() : id(0), trainCount(0), stationCount(0) {}
+#include<iostream>
+#include "RusRails.h"
+using namespace std;
 
 Route::Route(int id, int* trains, int* stations, int trainCount, int stationCount)
     : id(id), trainCount(trainCount), stationCount(stationCount) {
