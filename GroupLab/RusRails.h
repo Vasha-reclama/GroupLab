@@ -1,5 +1,7 @@
 #pragma once
+#include <iostream>
 #include <vector>
+#include <string>
 
 class Train {
 private:
@@ -21,6 +23,7 @@ public:
 	void setPath();
 	int getCurStation();
 	void changeCurStation(int x);
+	//Train();
 	Train(int id, int arrivalTime, int stationId);
 	int getId() const;
 	int getArrivalTime() const;
@@ -35,6 +38,7 @@ private:
 	int trainId;
 	int finish;
 public:
+	//Ticket();
 	friend std::istream& operator >>(std::istream& in, Ticket& r);
 	friend std::ostream& operator <<(std::ostream& out, const Ticket& r);
 	void setId(int x);
@@ -52,6 +56,7 @@ private:
 	int stationCount;
 
 public:
+	Route() {};
 	Route(int id, int* trains, int* stations, int trainCount, int stationCount);
 
 	friend std::istream& operator>>(std::istream& is, Route& route);
@@ -75,12 +80,13 @@ private:
 	int distances[5];
 
 public:
+	Station() {};
 	Station(int id, const char* name, int* adjacentStations, int* distances);
 
 	friend std::istream& operator>>(std::istream& is, Station& station);
 	friend std::ostream& operator<<(std::ostream& os, const Station& station);
 
-	int getId() const;
+	int getId();
 	const char* getName() const;
 	const int* getAdjacentStations() const;
 	const int* getDistances() const;
@@ -89,5 +95,5 @@ public:
 	void addAdjacentStation(int adjacentId, int distance);
 	void removeAdjacentStation(int adjacentId);
 	void editAdjacentStation(int index, int newAdjacentId, int newDistance);
-	void getTrainSchedule(const vector<Train>& trains) const;
+	void getTrainSchedule(const std::vector<Train>& trains);
 };

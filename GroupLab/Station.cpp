@@ -42,7 +42,7 @@ ostream& operator<<(ostream& os, const Station& station) {
     return os;
 }
 
-int Station::getId() const {
+int Station::getId() {
     return id;
 }
 
@@ -87,10 +87,11 @@ void Station::editAdjacentStation(int index, int newAdjacentId, int newDistance)
     distances[index] = newDistance;
 }
 
-void Station::getTrainSchedule(const vector<Train>& trains) const {
-    cout << "Расписание движения поездов по станции " << id << ": " << endl;
+void Station::getTrainSchedule(const std::vector<Train>& trains)  {
+    
+    cout << "Расписание движения поездов по станции " << getId() << ": " << endl;
     for (const Train& train : trains) {
-        if (train.getStationId() == id) {
+        if (train.getStationId() == getId()) {
             cout << "ID поезда: " << train.getId() << "Время прибытия: " << train.getArrivalTime() << endl;
         }
     }
