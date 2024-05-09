@@ -16,7 +16,6 @@ public:
 	friend std::istream& operator >>(std::istream& in, Train& r);
 	friend std::ostream& operator <<(std::ostream& out, const Train& r);
 	void setId(int x);
-	int getId();
 	int getLim();
 	std::time_t getStart();
 	int getPath();
