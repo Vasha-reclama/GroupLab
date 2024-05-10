@@ -1,4 +1,4 @@
-#include "RusRails.h"
+/*#include "RusRails.h"  //Этот файл не нужен, всё можно написать в Station.cpp , чтобы было удобнее
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -39,3 +39,4 @@ void deleteStation(int stationId) {
     remove("stations.dat");
     rename("temp.dat", "stations.dat");
 }
+*/

@@ -75,7 +75,7 @@ void Route::changeStations(int* newStations, int newStationCount) {
     }
 }
 
-void Route::addStation(int stationId) {
+/*void Route::addStation(int stationId) {
     if (stationCount < 20) {
         stations[stationCount++] = stationId;
     }
@@ -92,3 +92,4 @@ void Route::removeStation(int stationId) {
         }
     }
 }
+*/
