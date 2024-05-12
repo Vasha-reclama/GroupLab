@@ -1,42 +1,35 @@
-/*#include "RusRails.h"  //Этот файл не нужен, всё можно написать в Station.cpp , чтобы было удобнее
+#include "RusRails.h"
 #include <fstream>
 #include <iostream>
+#include <vector>
 using namespace std;
 
-void addStation(const Station& station) {
-    ofstream file("stations.dat", ios::binary | ios::app);
-    if (!file.is_open()) {
-        cout << "Error opening file for writing" << endl;
-        return;
-    }
-    file.write(reinterpret_cast<const char*>(&station), sizeof(Station));
-    file.close();
+void rjd::saveStations(StationManager& s, const std::string& filename) {
+	std::ofstream file(filename, std::ios::binary);
+
+	if (file.is_open()) {
+		if (s.getSize() == 0)
+		{
+			cout << "нет станций\n";
+			return;
+		}
+		file.write(reinterpret_cast<char*>(&s), sizeof(StationManager));
+		file.close();
+	}
+	else {
+		std::cerr << "Ошибка открытия файла для записи!" << std::endl;
+	}
 }
 
-void deleteStation(int stationId) {
-   ifstream inFile("stations.dat", ios::binary);
-    if (!inFile.is_open()) {
-        cout << "Error opening file for reading" << endl;
-        return;
-    }
-    ofstream outFile("temp.dat", ios::binary);
-    if (!outFile.is_open()) {
-        cout << "Error opening temporary file for writing" << endl;
-        inFile.close();
-        return;
-    }
+void rjd::loadStations(StationManager& s, const std::string& filename) {
+	std::ifstream file(filename, std::ios::binary);
 
-    Station station;
-    while (inFile.read(reinterpret_cast<char*>(&station), sizeof(Station))) {
-        if (station.getId() != stationId) {
-            outFile.write(reinterpret_cast<const char*>(&station), sizeof(Station));
-        }
-    }
-
-    inFile.close();
-    outFile.close();
-
-    remove("stations.dat");
-    rename("temp.dat", "stations.dat");
+	if (file.is_open()) {
+		file.read(reinterpret_cast<char*>(&s), sizeof(StationManager));
+		file.close();
+	}
+	else {
+		std::cerr << "Ошибка открытия файла для чтения!" << std::endl;
+	}
 }
-*/
+

@@ -14,27 +14,39 @@ Route::Route(int id, int* trains, int* stations, int trainCount, int stationCoun
 }
 
 istream& operator>>(istream& is, Route& route) {
-    is >> route.id;
+    //is >> route.id;
+    cout << "trainCount=";
+    if (!(is >> route.trainCount).good())
+        return is;
+    if (route.trainCount > 10) {//переделать после того как будет готова таблица поездов
+        cout << "Превышен лимит поездов";
+        return is;
+    }
     for (int i = 0; i < route.trainCount; ++i) {
-        is >> route.trains[i];
+        cout << "Введите поезд номер " << i + 1 << endl;
+        if (!(is >> route.trains[i]).good())
+            return is;
+    }
+    cout << "station count=";
+    if (!(is >> route.stationCount).good())
+        return is;
+    if (route.stationCount > 20) {
+        cout << "Превышен лимит станций";
+        return is;
     }
     for (int i = 0; i < route.stationCount; ++i) {
-        is >> route.stations[i];
+        cout << "Введите станцию номер " << i + 1 << endl;
+        if (!(is >> route.stations[i]).good()) {
+            cout << "Syntaxis error" << endl;
+            return is;
+        }
     }
     return is;
 }
 
 ostream& operator<<(ostream& os, const Route& route) {
-    os << "Route ID: " << route.id << endl;
-    os << "Trains: ";
-    for (int i = 0; i < route.trainCount; ++i) {
-        os << route.trains[i] << " ";
-    }
-    os << endl << "Stations: ";
-    for (int i = 0; i < route.stationCount; ++i) {
-        os << route.stations[i] << " ";
-    }
-    os << endl;
+    os << route.id << " " << route.stationCount << " " << route.stations[0] << "..." << route.stations[route.stationCount - 1] << " " << route.trainCount << " " <<
+        route.trains[0] << "..." << route.trains[route.trainCount - 1];
     return os;
 }
 
@@ -53,6 +65,9 @@ const int* Route::getStations() const {
 void Route::addTrain(int trainId) {
     if (trainCount < 10) {
         trains[trainCount++] = trainId;
+    }
+    else {
+        cout << "Достигнут лимит поездов" << endl;
     }
 }
 
@@ -75,9 +90,12 @@ void Route::changeStations(int* newStations, int newStationCount) {
     }
 }
 
-/*void Route::addStation(int stationId) {
+void Route::addStation(int stationId) {
     if (stationCount < 20) {
         stations[stationCount++] = stationId;
+    }
+    else {
+        cout << "Достигнут лимит станций" << endl;
     }
 }
 
@@ -92,4 +110,15 @@ void Route::removeStation(int stationId) {
         }
     }
 }
-*/
+
+int Route::getStatinsCount() {
+    return stationCount;
+}
+
+int Route::getTrainsCount() {
+    return trainCount;
+}
+
+void Route::setId(int x) {
+    id = x;
+}

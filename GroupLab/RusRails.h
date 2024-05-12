@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include <ctime>
 #include <string>
+#include <ctime>
 
 class Train {
 private:
@@ -66,43 +66,60 @@ public:
 	int getId() const;
 	const int* getTrains() const;
 	const int* getStations() const;
-
+	void setId(int x);
+	int getStatinsCount();
+	int getTrainsCount();
 	void addTrain(int trainId);
 	void removeTrain(int trainId);
 	void changeStations(int* newStations, int newStationCount);
-	//void addStation(int stationId);
-	//void removeStation(int stationId);  //зачем тут нужны 2 эти функции?? они принадлежат классу Station?
+	void addStation(int stationId);
+	void removeStation(int stationId);
 };
+
 class Station {
 private:
-	unsigned int id;    // id станции
-	char name[50];      // название станции
-	unsigned int number_station;    // номер станции
-	int distance;   // дистанция до смежной станции
-
-	std::vector<Station> stations;    // все станции
-	std::vector<Station> adjacent_stations;  // все смежные станции
+	int id;
+	std::string name; // имя станции
+	int distance; // дистанция до сдедующей станции путь в км
 
 public:
 	Station() {};
+	Station(int index, std::string n, int d) : id(index), name(n), distance(d) {}
+
 	friend std::istream& operator>>(std::istream& is, Station& station);
 	friend std::ostream& operator<<(std::ostream& os, const Station& station);
 
 	int getId();
-	char* getName();
-	Station* getAdjacentStations(int stationId, int adjacentId);
+	void setId(int id);
+	std::string getName();
+	void setName(std::string);
 	int getDistance();
-
-	void changeName(const char* newName);
-	void addAdjacentStation(int stationId, char * name, int distance);
-	void removeAdjacentStation(int stationId, int adjacentId);
-	//void editAdjacentStation(int stationId, int adjacentId, char* name, int newDistance);
-	void getTrainSchedule(const std::vector<Train>& trains);
-
-	Station* getStation(int stationId);
-	void addStation(char* name);
-	//void editStation(int stationId, char* name);
-	void removeStation(int stationId);
-	void printALLStation();// вывод всех станций, включая смежные
-	void findStation(char* name);
+	void setDistance(int d);
 };
+
+class StationManager {
+private:
+	std::vector<Station> stations; // список станций. 
+
+public:
+	// функции для работы со станциями.
+	void addStation(std::string name, int distance);
+	void editStation(int index, std::string name, int distance);
+	void deleteStation(int index);
+	void printStations();
+	int getSize(); // сколько станций
+};
+
+
+namespace rjd {
+	void create(std::vector<Route>* routes, int* n);
+	void read(std::vector<Route>* routes, int* n);
+	void add(std::vector<Route>* routes, int* n);
+	void remove(std::vector<Route>* routes, int* n);
+	void edit(std::vector<Route>* routes, int n);
+
+	// нужно только сохранять и загружать, и работать в памяти (ОЗУ) со станциями (add del edit)
+	// работа с файлом это медленно если станций 1000
+	void saveStations(StationManager& s, const std::string& filename);
+	void loadStations(StationManager& s, const std::string& filename);
+}
