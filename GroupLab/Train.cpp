@@ -55,11 +55,11 @@ void Train::changeCurStation(int x) {
 }
 
 ostream& operator <<(ostream& out, const Train& r) {
-	string timeStart = ctime(&(r.start));
-	if (!timeStart.empty() && timeStart[timeStart.size() - 1] == '\n') {
-		timeStart.erase(timeStart.size() - 1);
-	}
-	out << r.id << " " << r.limit << " " << timeStart << " " << r.curSt << " " << r.path;
+	tm timeStart;
+	localtime_s(&timeStart, &parcel.sentTime);
+	char start[80];
+	strftime(start, 80, "%Y-%m-%d %H:%M:%S", &timeStart);
+	out << r.id << " " << r.limit << " " << start << " " << r.curSt << " " << r.path;
 	return out;
 }
 
@@ -96,6 +96,5 @@ istream& operator >>(istream& in, Train& r) {
 	}
 	if (timeStart >= globalTime) : //globalTime это время ,которое сейчас
 		r.start = timeStart;
-
 	return in;
 }
