@@ -65,7 +65,9 @@ public:
 	int getId() const;
 	const int* getTrains() const;
 	const int* getStations() const;
-
+	void setId(int x);
+	int getStatinsCount();
+	int getTrainsCount();
 	void addTrain(int trainId);
 	void removeTrain(int trainId);
 	void changeStations(int* newStations, int newStationCount);
@@ -97,3 +99,12 @@ public:
 	void editAdjacentStation(int index, int newAdjacentId, int newDistance);
 	void getTrainSchedule(const std::vector<Train>& trains);
 };
+
+
+namespace rjd {
+	void create(std::vector<Route>* routes, int* n);
+	void read(std::vector<Route>* routes, int* n);
+	void add(std::vector<Route>* routes, int* n);
+	void remove(std::vector<Route>* routes, int* n);
+	void edit(std::vector<Route>* routes, int n);
+}
