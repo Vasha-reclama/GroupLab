@@ -1,19 +1,72 @@
-
 #include<iostream>
 #include "RusRails.h"
 
 using namespace std;
 
+Station::Station(int id, const char* name, int* adjacentStations, int* distances) : numAdjacent(0) {
+	this->id = id;
+	strcpy(this->name, name);
+	for (int i = 0; i < 5; i++) {
+		if (adjacentStations[i] != -1 && distances[i] != -1) {
+			this->adjacentStations[i] = adjacentStations[i];
+			this->distances[i] = distances[i];
+			numAdjacent++;
+		}
+		else {
+			break;
+		}
+	}
+}
+
 istream& operator>>(istream& is, Station& station) {
+	//is >> station.id;
+
+	cout << "Введите название станции: ";
+	is >> station.name;
+	cout << endl;
+
+	cout << "Введите кол-во смежных станций = ";
+
+	if (!(is >> station.numAdjacent).good())
+		return is;
+	if (station.numAdjacent > 5) {
+		cout << "Превышен лимит станций" << endl;
+		return is;
+	}
+
+	for (int i = 0; i < station.numAdjacent; i++) {
+		if (station.adjacentStations[i] != -1 && station.distances[i] != -1) {
+			cout << "Введите смежную станцию: ";
+			if (!(is >> station.adjacentStations[i]).good())
+			{
+				cout << "Смежная станция должна быть цифрой" << endl;
+				return is;
+			}
+			cout << "Дистанция: ";
+			if (!(is >> station.distances[i]).good())
+			{
+				cout << "Дистанция должна быть цифрой" << endl;
+				return is;
+			}
+			cout << endl;
+		}
+	}
+
 	return is;
 }
 
 ostream& operator<<(ostream& os, const Station& station) {
-	os << "Идентификатор станции: " << station.id << "\n"
-		<< "Название: " << station.name << "\n";
-	os << "Расстояния: ";
-	os << station.distance << " ";
-	os << "\n";
+
+	os << "id= " << station.id << "  " << "name=" << station.name << endl;
+
+	for (int i = 0; i < station.numAdjacent; i++) {
+		if (station.adjacentStations[i] != -1 && station.distances[i] != -1) {
+			os << i << ":";
+			os << "Смежная станция: " << station.adjacentStations[i] << "  ";
+			os << "Дистанция: " << station.distances[i] << endl;
+		}
+	}
+
 	return os;
 }
 
@@ -21,49 +74,68 @@ int Station::getId() {
 	return id;
 }
 
-void Station::setId(int id) {
-	this->id = id;
+void Station::setId(int _id) {
+	id = _id;
 }
 
-void Station::setDistance(int d) {
-	distance = d;
-}
-
-int Station::getDistance() {
-	return distance;
-}
-
-std::string Station::getName() {
+const char* Station::getName() const {
 	return name;
 }
 
-void Station::setName(std::string name)
-{
-	this->name = name;
+const int* Station::getAdjacentStations() const {
+	return adjacentStations;
 }
 
-void StationManager::addStation(std::string name, int distance) {
-	int tempId = stations.size(); // следующий id это кол-во эл-тов в списке
-	Station newStation(tempId, name, distance);
-	stations.push_back(newStation); // вставляем в конец
+const int* Station::getDistances() const {
+	return distances;
 }
 
-void StationManager::editStation(int index, std::string name, int distance) {
-	stations[index].setName(name);
-	stations[index].setDistance(distance);
+void Station::changeName(const char* newName) {
+	strcpy(name, newName);
 }
 
-void StationManager::deleteStation(int index) {
-	stations.erase(stations.begin() + index);
-}
-
-void StationManager::printStations() {
-	for (int i = 0; i < stations.size(); i++) {
-		cout << stations[i];
+void Station::addAdjacentStation(int adjacentId, int distance) {
+	if (numAdjacent < 5) {
+		adjacentStations[numAdjacent] = adjacentId;
+		distances[numAdjacent] = distance;
+		numAdjacent++;
+	}
+	else {
+		std::cout << "Cannot add more adjacent stations." << std::endl;
 	}
 }
 
-int StationManager::getSize()
-{
-	return stations.size();
+void Station::removeAdjacentStation(int adjacentId) {
+	int flag_del = 0;
+	for (int i = 0; i < numAdjacent; i++) {
+		if (adjacentStations[i] == adjacentId) {
+			for (int j = i; j < numAdjacent - 1; j++) {
+				adjacentStations[j] = adjacentStations[j + 1];
+				distances[j] = distances[j + 1];
+			}
+			numAdjacent--;
+			flag_del = 1;
+			break;
+		}
+	}
+
+	if (flag_del == 0)
+	{
+		std::cout << "Нет такой станции!" << std::endl;
+	}
 }
+
+void Station::editAdjacentStation(int index, int newAdjacentId, int newDistance) {
+	if (index >= 0 && index < numAdjacent) {
+		adjacentStations[index] = newAdjacentId;
+		distances[index] = newDistance;
+	}
+	else {
+		std::cout << "Invalid index." << std::endl;
+	}
+}
+
+void Station::getTrainSchedule(const Train* trains) {
+	// реализация получения расписания поездов для станции
+}
+

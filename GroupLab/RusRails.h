@@ -79,35 +79,29 @@ public:
 class Station {
 private:
 	int id;
-	std::string name; // имя станции
-	int distance; // дистанция до сдедующей станции путь в км
+	char name[20];
+	int adjacentStations[5];
+	int distances[5];
+	int numAdjacent;
 
 public:
-	Station() {};
-	Station(int index, std::string n, int d) : id(index), name(n), distance(d) {}
+	Station() : numAdjacent(0) {};
+	Station(int id, const char* name, int* adjacentStations, int* distances);
 
 	friend std::istream& operator>>(std::istream& is, Station& station);
 	friend std::ostream& operator<<(std::ostream& os, const Station& station);
 
 	int getId();
-	void setId(int id);
-	std::string getName();
-	void setName(std::string);
-	int getDistance();
-	void setDistance(int d);
-};
+	void setId(int _id);
+	const char* getName() const;
+	const int* getAdjacentStations() const;
+	const int* getDistances() const;
 
-class StationManager {
-private:
-	std::vector<Station> stations; // список станций. 
-
-public:
-	// функции для работы со станциями.
-	void addStation(std::string name, int distance);
-	void editStation(int index, std::string name, int distance);
-	void deleteStation(int index);
-	void printStations();
-	int getSize(); // сколько станций
+	void changeName(const char* newName);
+	void addAdjacentStation(int adjacentId, int distance);
+	void removeAdjacentStation(int adjacentId);
+	void editAdjacentStation(int index, int newAdjacentId, int newDistance);
+	void getTrainSchedule(const Train* trains);
 };
 
 
@@ -118,8 +112,10 @@ namespace rjd {
 	void remove(std::vector<Route>* routes, int* n);
 	void edit(std::vector<Route>* routes, int n);
 
-	// нужно только сохранять и загружать, и работать в памяти (ОЗУ) со станциями (add del edit)
-	// работа с файлом это медленно если станций 1000
-	void saveStations(StationManager& s, const std::string& filename);
-	void loadStations(StationManager& s, const std::string& filename);
+	void create(std::vector<Station>* station, int* n);
+	void read(std::vector<Station>* station, int* n);
+	void add(std::vector<Station>* station, int* n);
+	void remove(std::vector<Station>* station, int* n);
+	void edit(std::vector<Station>* station, int n);
+	void print(std::vector<Station>* station, int n);
 }
