@@ -25,8 +25,8 @@ time_t Train::getStart() {
 	return start;
 }
 
-int Train::getLim() {
-	return limit;
+int Train::setLim(int x) {
+	limit = x;
 }
 
 int Train::getPath() {
@@ -65,14 +65,10 @@ ostream& operator <<(ostream& out, const Train& r) {
 
 istream& operator >>(istream& in, Train& r) {
 	string time;
-
-	cout << "Введите id поезда: "; //Cтоило бы еще добавить проверку ,чтобы одинаковых id не было, но для этого надо где то их все хранить 
-	cin >> r.id;
 	cout << "Лимит пассажиров: ";
-	while (!(in >> r.limit) || r.limit <= 1 || r.limit > 50) {
-		in.clear();
-		in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		cout << "Недопустимое значение, введите значение от 1 до 50 " << endl;
+	int limit;
+	while (!(in >> limit).good() || r.limit < 1 || r.limit > 50) {
+		cout << "Недопустимое значение, введите значение от 1 до 50 " << endl;;
 	}
 	cout << "Выберите начальную станцию: ";
 	//Тут должны выводиться все начальные станции и их id
