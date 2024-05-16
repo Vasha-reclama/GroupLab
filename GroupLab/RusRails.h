@@ -42,6 +42,11 @@ public:
 	int getStart();
 	int getFinish();
 	int getTrain();
+	void createDatabase(const char* filename);
+	void readDatabase(const char* filename);
+	void addTicket(const char* filename, const Ticket& newTicket);
+	void deleteTicket(const char* filename, int ticketNumberToDelete);
+	void editTicket(const char* filename, int ticketNumberToEdit, const Ticket& updatedTicket);
 };
 class Route {
 private:
@@ -89,5 +94,5 @@ public:
 	void addAdjacentStation(int adjacentId, int distance);
 	void removeAdjacentStation(int adjacentId);
 	void editAdjacentStation(int index, int newAdjacentId, int newDistance);
-	void getTrainSchedule(const vector<Train>& trains) const;
+	void getTrainSchedule(const std::vector<Train>& trains) const;
 };
