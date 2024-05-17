@@ -42,12 +42,14 @@ public:
 	int getStart();
 	int getFinish();
 	int getTrain();
+};
+namespace ticket{
 	void createDatabase(const char* filename);
 	void readDatabase(const char* filename);
 	void addTicket(const char* filename, const Ticket& newTicket);
 	void deleteTicket(const char* filename, int ticketNumberToDelete);
 	void editTicket(const char* filename, int ticketNumberToEdit, const Ticket& updatedTicket);
-};
+}
 class Route {
 private:
 	int id;
@@ -57,6 +59,7 @@ private:
 	int stationCount;
 
 public:
+	Route();
 	Route(int id, int* trains, int* stations, int trainCount, int stationCount);
 
 	friend std::istream& operator>>(std::istream& is, Route& route);
@@ -72,6 +75,11 @@ public:
 	void addStation(int stationId);
 	void removeStation(int stationId);
 };
+namespace route {
+	void addRoute(const Route& route);
+	void deleteRoute(int routeId);
+
+}
 class Station {
 private:
 	int id;
@@ -80,6 +88,7 @@ private:
 	int distances[5];
 
 public:
+	Station();
 	Station(int id, const char* name, int* adjacentStations, int* distances);
 
 	friend std::istream& operator>>(std::istream& is, Station& station);
@@ -95,4 +104,9 @@ public:
 	void removeAdjacentStation(int adjacentId);
 	void editAdjacentStation(int index, int newAdjacentId, int newDistance);
 	void getTrainSchedule(const std::vector<Train>& trains) const;
+
 };
+namespace station {
+	void addStation(const Station& station);
+	void deleteStation(int stationId);
+}
