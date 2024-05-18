@@ -1,106 +1,86 @@
-#include<iostream>
-#include<ctime>
-#include<fstream>
-#include<string>
-#include"RusRails.h"
-
+#include "RusRails.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
 using namespace std;
-namespace ticket {
-    void createDatabase(const char* filename) {
-        ofstream file(filename, ios::out | ios::binary);
+
+namespace rjd {
+    const char* filename = "tickets.dat";
+
+    void write(const vector<Ticket>& tickets) {
+        ofstream out(filename, ios::binary);
+        if (!out.is_open()) {
+            cout << "Не удается открыть файл для записи." << endl;
+            return;
+        }
+        int n = tickets.size();
+        out.write(reinterpret_cast<const char*>(&n), sizeof(int));
+        out.write(reinterpret_cast<const char*>(&tickets[0]), sizeof(Ticket) * n);
+        out.close();
     }
 
-    void readDatabase(const char* filename) {
-        ifstream file(filename, ios::in | ios::binary);
-        if (!file) {
-            cout << "Error opening file for reading." << endl;
+    void read(std::vector<Ticket>& tickets, int& ticketCount) {
+        ifstream in(filename, ios::binary);
+        if (!in.is_open()) {
+            cout << "Не удается открыть файл для чтения." << endl;
             return;
         }
-
-        Ticket ticket;
-        while (file.read((char*)&ticket, sizeof(Ticket))) {
-            cout << "Номер билета: " << ticket.getId() << endl;
-            cout << "Откуда отбывает: " << ticket.getStart() << endl;
-            cout << "Куда направляется: " << ticket.getFinish() << endl;
-            cout << "Номер поезда:" << ticket.getTrain() << endl;
-            cout << endl;
-        }
-        file.close();
+        int n;
+        in.read(reinterpret_cast<char*>(&n), sizeof(int));
+        tickets.resize(n);
+        in.read(reinterpret_cast<char*>(&tickets[0]), sizeof(Ticket) * n);
+        in.close();
     }
 
-    void addTicket(const char* filename, const Ticket& newTicket) {
-        ofstream file(filename, ios::out | ios::binary | ios::app);
-        if (!file) {
-            cout << "Error opening file for writing." << endl;
-            return;
+    void create(vector<Ticket>& tickets, int& ticketCount) {
+        cout << "Введите количество билетов: ";
+        cin >> ticketCount;
+        tickets.resize(ticketCount);
+        for (int i = 0; i < ticketCount; ++i) {
+            cout << "Введите данные для билета " << i + 1 << ":\n";
+            cin >> tickets[i];
         }
-
-        file.write((char*)&newTicket, sizeof(Ticket));
-        file.close();
+        write(tickets);
     }
 
-    void deleteTicket(const char* filename, int ticketNumberToDelete) {
-        ifstream inFile(filename, ios::in | ios::binary);
-        if (!inFile) {
-            cout << "Error opening file for reading." << endl;
-            return;
-        }
-
-        ofstream outFile("temp.dat", ios::out | ios::binary);
-        if (!outFile) {
-            cout << "Error opening temp file for writing." << endl;
-            inFile.close();
-            return;
-        }
-
-        Ticket ticket;
-        while (inFile.read((char*)&ticket, sizeof(Ticket))) {
-            if (ticket.getId() != ticketNumberToDelete) {
-                outFile.write((char*)&ticket, sizeof(Ticket));
-            }
-        }
-
-        inFile.close();
-        outFile.close();
-
-        remove(filename);
-        rename("temp.dat", filename);
+    void add(vector<Ticket>& tickets, int& ticketCount) {
+        Ticket newTicket;
+        cout << "Введите данные для нового билета:\n";
+        cin >> newTicket;
+        tickets.push_back(newTicket);
+        ++ticketCount;
+        write(tickets);
     }
 
-    void editTicket(const char* filename, int ticketNumberToEdit, const Ticket& updatedTicket) {
-        ifstream inFile(filename, ios::in | ios::binary);
-        if (!inFile) {
-            cout << "Error opening file for reading." << endl;
-            return;
+    void remove(vector<Ticket>& tickets, int& ticketCount) {
+        int ticketId;
+        cout << "Введите номер билета для удаления: ";
+        cin >> ticketId;
+        auto it = remove_if(tickets.begin(), tickets.end(), [ticketId](Ticket& t) { return t.getId() == ticketId; });
+        if (it != tickets.end()) {
+            tickets.erase(it, tickets.end());
+            --ticketCount;
+            write(tickets);
+            cout << "Билет удален." << endl;
         }
-
-        ofstream outFile("temp.dat", ios::out | ios::binary);
-        if (!outFile) {
-            cout << "Error opening temp file for writing." << endl;
-            inFile.close();
-            return;
+        else {
+            cout << "Билет с таким номером не найден." << endl;
         }
+    }
 
-        Ticket ticket;
-        bool found = false;
-        while (inFile.read((char*)&ticket, sizeof(Ticket))) {
-            if (ticket.getId() == ticketNumberToEdit) {
-                outFile.write((char*)&updatedTicket, sizeof(Ticket));
-                found = true;
-            }
-            else {
-                outFile.write((char*)&ticket, sizeof(Ticket));
-            }
+    void edit(std::vector<Ticket>& tickets, int& ticketCount) {
+        int ticketId;
+        cout << "Введите номер билета для редактирования: ";
+        cin >> ticketId;
+        auto it = find_if(tickets.begin(), tickets.end(), [ticketId](Ticket& t) { return t.getId() == ticketId; });
+        if (it != tickets.end()) {
+            cout << "Введите новые данные для билета:\n";
+            cin >> *it;
+            write(tickets);
+            cout << "Билет отредактирован." << endl;
         }
-
-        inFile.close();
-        outFile.close();
-
-        remove(filename);
-        rename("temp.dat", filename);
-
-        if (!found) {
-            cout << "Билет с номером " << ticketNumberToEdit << " не найден." << endl;
+        else {
+            cout << "Билет с таким номером не найден." << endl;
         }
     }
 }

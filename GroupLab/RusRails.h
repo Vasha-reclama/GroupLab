@@ -43,13 +43,7 @@ public:
 	int getFinish();
 	int getTrain();
 };
-namespace ticket{
-	void createDatabase(const char* filename);
-	void readDatabase(const char* filename);
-	void addTicket(const char* filename, const Ticket& newTicket);
-	void deleteTicket(const char* filename, int ticketNumberToDelete);
-	void editTicket(const char* filename, int ticketNumberToEdit, const Ticket& updatedTicket);
-}
+
 class Route {
 private:
 	int id;
@@ -109,4 +103,26 @@ public:
 namespace station {
 	void addStation(const Station& station);
 	void deleteStation(int stationId);
+}
+namespace rjd {
+	void create(std::vector<Route>* routes, int* n);
+	void read(std::vector<Route>* routes, int* n);
+	void add(std::vector<Route>* routes, int* n);
+	void remove(std::vector<Route>* routes, int* n);
+	void edit(std::vector<Route>* routes, int n);
+
+
+	void create(std::vector<Station>* station, int* n);
+	void read(std::vector<Station>* station, int* n);
+	void add(std::vector<Station>* station, int* n);
+	void remove(std::vector<Station>* station, int* n);
+	void edit(std::vector<Station>* station, int n);
+	void print(std::vector<Station>* station, int n);
+
+	void write(const vector<Ticket>& tickets);
+	void create(std::vector<Ticket>& tickets, int& ticketCount);
+	void read(std::vector<Ticket>& tickets, int& ticketCount);
+	void add(std::vector<Ticket>& tickets, int& ticketCount);
+	void remove(std::vector<Ticket>& tickets, int& ticketCount);
+	void edit(std::vector<Ticket>& tickets, int& ticketCount);
 }
