@@ -2,13 +2,14 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <ctime>
 
 class Train {
 private:
 	unsigned id;
 	short limit;
 	time_t start = {};
-	int curSt; //ìá è íå íóæíî, ÿ âîò òàê ùàñ çàäóìàëñÿ.............
+	int curSt; //Ã¬Ã¡ Ã¨ Ã­Ã¥ Ã­Ã³Ã¦Ã­Ã®, Ã¿ Ã¢Ã®Ã² Ã²Ã Ãª Ã¹Ã Ã± Ã§Ã Ã¤Ã³Ã¬Ã Ã«Ã±Ã¿.............
 	int path;
 	int arrivalTime;
 	int stationId;
@@ -33,7 +34,7 @@ public:
 class Ticket {
 private:
 	unsigned int id;
-	char name[40] = {};//íàäåþñü 40 ñèìâîëîâ äëÿ ôèî õâàòèò, õàõõàõà
+	char name[40] = {};//Ã­Ã Ã¤Ã¥Ã¾Ã±Ã¼ 40 Ã±Ã¨Ã¬Ã¢Ã®Ã«Ã®Ã¢ Ã¤Ã«Ã¿ Ã´Ã¨Ã® ÃµÃ¢Ã Ã²Ã¨Ã², ÃµÃ ÃµÃµÃ ÃµÃ 
 	int startSt;
 	int trainId;
 	int finish;
@@ -74,21 +75,24 @@ public:
 	void addStation(int stationId);
 	void removeStation(int stationId);
 };
+
 class Station {
 private:
 	int id;
 	char name[20];
 	int adjacentStations[5];
 	int distances[5];
+	int numAdjacent;
 
 public:
-	Station() {};
+	Station() : numAdjacent(0) {};
 	Station(int id, const char* name, int* adjacentStations, int* distances);
 
 	friend std::istream& operator>>(std::istream& is, Station& station);
 	friend std::ostream& operator<<(std::ostream& os, const Station& station);
 
 	int getId();
+	void setId(int _id);
 	const char* getName() const;
 	const int* getAdjacentStations() const;
 	const int* getDistances() const;
@@ -97,7 +101,7 @@ public:
 	void addAdjacentStation(int adjacentId, int distance);
 	void removeAdjacentStation(int adjacentId);
 	void editAdjacentStation(int index, int newAdjacentId, int newDistance);
-	void getTrainSchedule(const std::vector<Train>& trains);
+	void getTrainSchedule(const Train* trains);
 };
 
 
@@ -107,4 +111,13 @@ namespace rjd {
 	void add(std::vector<Route>* routes, int* n);
 	void remove(std::vector<Route>* routes, int* n);
 	void edit(std::vector<Route>* routes, int n);
+
+
+	void create(std::vector<Station>* station, int* n);
+	void read(std::vector<Station>* station, int* n);
+	void add(std::vector<Station>* station, int* n);
+	void remove(std::vector<Station>* station, int* n);
+	void edit(std::vector<Station>* station, int n);
+	void print(std::vector<Station>* station, int n);
+
 }

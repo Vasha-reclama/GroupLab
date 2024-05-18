@@ -18,12 +18,12 @@ istream& operator>>(istream& is, Route& route) {
     cout << "trainCount=";
     if (!(is >> route.trainCount).good())
         return is;
-    if (route.trainCount > 10) {//переделать после того как будет готова таблица поездов
-        cout << "Превышен лимит поездов";
+    if (route.trainCount > 10) {//ГЇГҐГ°ГҐГ¤ГҐГ«Г ГІГј ГЇГ®Г±Г«ГҐ ГІГ®ГЈГ® ГЄГ ГЄ ГЎГіГ¤ГҐГІ ГЈГ®ГІГ®ГўГ  ГІГ ГЎГ«ГЁГ¶Г  ГЇГ®ГҐГ§Г¤Г®Гў
+        cout << "ГЏГ°ГҐГўГ»ГёГҐГ­ Г«ГЁГ¬ГЁГІ ГЇГ®ГҐГ§Г¤Г®Гў";
         return is;
     }
     for (int i = 0; i < route.trainCount; ++i) {
-        cout << "Введите поезд номер " << i + 1 << endl;
+        cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЇГ®ГҐГ§Г¤ Г­Г®Г¬ГҐГ° " << i + 1 << endl;
         if (!(is >> route.trains[i]).good())
             return is;
     }
@@ -31,11 +31,11 @@ istream& operator>>(istream& is, Route& route) {
     if (!(is >> route.stationCount).good())
         return is;
     if (route.stationCount > 20) {
-        cout << "Превышен лимит станций";
+        cout << "ГЏГ°ГҐГўГ»ГёГҐГ­ Г«ГЁГ¬ГЁГІ Г±ГІГ Г­Г¶ГЁГ©";
         return is;
     }
     for (int i = 0; i < route.stationCount; ++i) {
-        cout << "Введите станцию номер " << i + 1 << endl;
+        cout << "Г‚ГўГҐГ¤ГЁГІГҐ Г±ГІГ Г­Г¶ГЁГѕ Г­Г®Г¬ГҐГ° " << i + 1 << endl;
         if (!(is >> route.stations[i]).good()) {
             cout << "Syntaxis error" << endl;
             return is;
@@ -67,7 +67,7 @@ void Route::addTrain(int trainId) {
         trains[trainCount++] = trainId;
     }
     else {
-        cout << "Достигнут лимит поездов" << endl;
+        cout << "Г„Г®Г±ГІГЁГЈГ­ГіГІ Г«ГЁГ¬ГЁГІ ГЇГ®ГҐГ§Г¤Г®Гў" << endl;
     }
 }
 
@@ -94,8 +94,9 @@ void Route::addStation(int stationId) {
     if (stationCount < 20) {
         stations[stationCount++] = stationId;
     }
-    else{
-        cout << "Достигнут лимит станций" << endl;
+
+    else {
+        cout << "Г„Г®Г±ГІГЁГЈГ­ГіГІ Г«ГЁГ¬ГЁГІ Г±ГІГ Г­Г¶ГЁГ©" << endl;
     }
 }
 
@@ -119,6 +120,8 @@ int Route::getTrainsCount() {
     return trainCount;
 }
 
-void Route::setId(int x){
+
+void Route::setId(int x) {
     id = x;
 }
+

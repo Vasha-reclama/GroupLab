@@ -23,11 +23,13 @@ namespace rjd {
 			cout << "Syntaxis error" << endl;
 			return;
 		}
-		routes->resize( (*n));
+
+		routes->resize((*n));
 		for (int i = 0; i < *n; i++) {
 			Route temp;
-			if (!(cin >> temp).good() or temp.getStatinsCount() > 20 or temp.getTrainsCount()>10) {
-				cout << "×òî-òî ïîøëî íå òàê" << endl;
+			if (!(cin >> temp).good() or temp.getStatinsCount() > 20 or temp.getTrainsCount() > 10) {
+
+				cout << "Ã—Ã²Ã®-Ã²Ã® Ã¯Ã®Ã¸Ã«Ã® Ã­Ã¥ Ã²Ã Ãª" << endl;
 				return;
 			}
 			temp.setId(i);
@@ -47,11 +49,13 @@ namespace rjd {
 		ifstream in;
 		in.open("stations", ios_base::binary);
 		if (!in.is_open()) {
-			cout << "Ôàéë íå áûë îòêðûò êîððåêòíî" << endl;
+			cout << "Ã”Ã Ã©Ã« Ã­Ã¥ Ã¡Ã»Ã« Ã®Ã²ÃªÃ°Ã»Ã² ÃªÃ®Ã°Ã°Ã¥ÃªÃ²Ã­Ã®" << endl;
 			return;
 		}
 		in.read(reinterpret_cast<char*>(n), sizeof(int));
-		routes->resize( *n);
+
+		routes->resize(*n);
+
 		in.read(reinterpret_cast<char*>(&(routes->at(0))), sizeof(Route) * *n);
 		print(routes, *n);
 	}
@@ -59,10 +63,12 @@ namespace rjd {
 	void add(vector<Route>* routes, int* n) {
 		Route temp;
 		if (!(cin >> temp).good() or temp.getStatinsCount() > 20 or temp.getTrainsCount() > 10) {
-			cout << "×òî-òî ïîøëî íå òàê" << endl;
+			cout << "Ã—Ã²Ã®-Ã²Ã® Ã¯Ã®Ã¸Ã«Ã® Ã­Ã¥ Ã²Ã Ãª" << endl;
 			return;
 		}
-		temp.setId(routes->at((*n)-1).getId()+1);
+
+		temp.setId(routes->at((*n) - 1).getId() + 1);
+
 		routes->push_back(temp);
 		(*n)++;
 		write(routes, *n);
@@ -70,13 +76,15 @@ namespace rjd {
 
 	void remove(vector<Route>* routes, int* n) {
 		print(routes, *n);
-		cout << "Âûáåðèòå ìàðøðóò äëÿ óäàëåíèÿ" << endl;
+		cout << "Ã‚Ã»Ã¡Ã¥Ã°Ã¨Ã²Ã¥ Ã¬Ã Ã°Ã¸Ã°Ã³Ã² Ã¤Ã«Ã¿ Ã³Ã¤Ã Ã«Ã¥Ã­Ã¨Ã¿" << endl;
 		int id;
 		if (!(cin >> id).good()) {
 			cout << "Synctaxis error" << endl;
 			return;
 		}
-		int x=-1;
+
+		int x = -1;
+
 		for (int i = 0; i < *n; i++) {
 			if (routes->at(i).getId() == id) {
 				x = i;
@@ -94,7 +102,7 @@ namespace rjd {
 
 	void edit(vector<Route>* routes, int n) {
 		print(routes, n);
-		cout << "Âûáåðèòå ìàðøðóò äëÿ ðåäàêòèðîâàíèÿ" << endl;
+		cout << "Ã‚Ã»Ã¡Ã¥Ã°Ã¨Ã²Ã¥ Ã¬Ã Ã°Ã¸Ã°Ã³Ã² Ã¤Ã«Ã¿ Ã°Ã¥Ã¤Ã ÃªÃ²Ã¨Ã°Ã®Ã¢Ã Ã­Ã¨Ã¿" << endl;
 		int id;
 		if (!(cin >> id).good()) {
 			cout << "Synctaxis error" << endl;
@@ -122,14 +130,14 @@ namespace rjd {
 		switch (key) {
 		case 1: {
 			int key1;
-			cout << "1-äîáàâèòü ñòàíöèþ, 2-ïåðåçàïèñàòü ïîñëåäîâàòåëüíîñòü" << endl;
+			cout << "1-Ã¤Ã®Ã¡Ã Ã¢Ã¨Ã²Ã¼ Ã±Ã²Ã Ã­Ã¶Ã¨Ã¾, 2-Ã¯Ã¥Ã°Ã¥Ã§Ã Ã¯Ã¨Ã±Ã Ã²Ã¼ Ã¯Ã®Ã±Ã«Ã¥Ã¤Ã®Ã¢Ã Ã²Ã¥Ã«Ã¼Ã­Ã®Ã±Ã²Ã¼" << endl;
 			if (!(cin >> key1).good()) {
 				cout << "syntaxis error" << endl;
 				return;
 			}
 			switch (key1) {
 			case 1: {
-				cout << "Âûáåðèòå ñòàíöèþ" << endl;//ïåðåäåëàòü, êîãäà áóäåò ãîòîâà òàáëèöà ñòàíöèé
+				cout << "Ã‚Ã»Ã¡Ã¥Ã°Ã¨Ã²Ã¥ Ã±Ã²Ã Ã­Ã¶Ã¨Ã¾" << endl;//Ã¯Ã¥Ã°Ã¥Ã¤Ã¥Ã«Ã Ã²Ã¼, ÃªÃ®Ã£Ã¤Ã  Ã¡Ã³Ã¤Ã¥Ã² Ã£Ã®Ã²Ã®Ã¢Ã  Ã²Ã Ã¡Ã«Ã¨Ã¶Ã  Ã±Ã²Ã Ã­Ã¶Ã¨Ã©
 				int x;
 				if (!(cin >> x).good()) {
 					cout << "Syntaxis error" << endl;
@@ -139,7 +147,7 @@ namespace rjd {
 			}
 				  break;
 			case 2: {
-				cout << "Ââåäèòå íîâîå êîë-âî ñòàíöèé" << endl;
+				cout << "Ã‚Ã¢Ã¥Ã¤Ã¨Ã²Ã¥ Ã­Ã®Ã¢Ã®Ã¥ ÃªÃ®Ã«-Ã¢Ã® Ã±Ã²Ã Ã­Ã¶Ã¨Ã©" << endl;
 				int newStationCount;
 				int newStation[20];
 				if (!(cin >> newStationCount).good()) {
@@ -160,15 +168,17 @@ namespace rjd {
 			  break;
 		case 2: {
 			int key2;
-			cout << "1-äîáàâèòü ïîåçä, 2-óäàëèòü ïîåçä" << endl;
+			cout << "1-Ã¤Ã®Ã¡Ã Ã¢Ã¨Ã²Ã¼ Ã¯Ã®Ã¥Ã§Ã¤, 2-Ã³Ã¤Ã Ã«Ã¨Ã²Ã¼ Ã¯Ã®Ã¥Ã§Ã¤" << endl;
 			if (!(cin >> key2).good()) {
 				cout << "Syntaxis error" << endl;
 				return;
 			}
-			switch (key2){
+
+			switch (key2) {
+
 			case 1:
 			{
-				cout << "Âûáåðèòå äîñòïóíûé ïîåçä" << endl;
+				cout << "Ã‚Ã»Ã¡Ã¥Ã°Ã¨Ã²Ã¥ Ã¤Ã®Ã±Ã²Ã¯Ã³Ã­Ã»Ã© Ã¯Ã®Ã¥Ã§Ã¤" << endl;
 				int x;
 				if (!(cin >> x).good()) {
 					cout << "Syntaxis error" << endl;
@@ -179,10 +189,12 @@ namespace rjd {
 			break;
 			case 2: {
 				for (int i = 0; i < temp->getTrainsCount(); i++) {
-					cout << temp->getTrains()[i]<<" ";
+
+					cout << temp->getTrains()[i] << " ";
+
 				}
 				cout << endl;
-				cout << "Âûáåðèòå ïîåçä, êîòîðûé õîòèòå óäàëèòü" << endl;
+				cout << "Ã‚Ã»Ã¡Ã¥Ã°Ã¨Ã²Ã¥ Ã¯Ã®Ã¥Ã§Ã¤, ÃªÃ®Ã²Ã®Ã°Ã»Ã© ÃµÃ®Ã²Ã¨Ã²Ã¥ Ã³Ã¤Ã Ã«Ã¨Ã²Ã¼" << endl;
 				int x;
 				if (!(cin >> x).good()) {
 					cout << "Syntaxis error" << endl;
