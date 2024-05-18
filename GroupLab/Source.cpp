@@ -8,12 +8,15 @@ using namespace std;
 int main() {
 	setlocale(LC_ALL, "Ru");
 	vector<Route> routes;
+
 	vector<Station> station;
+
 
 	int routesCount;
 	//rjd::create(&routes, &routesCount);
 	rjd::read(&routes, &routesCount);
 	rjd::edit(&routes, routesCount);
+
 
 	int stationCount = 0;
 	//rjd::create(&station, &stationCount);
@@ -26,5 +29,6 @@ int main() {
 	//	rjd::create(&routes, &routesCount);
 	rjd::read(&routes, &routesCount);
 	rjd::edit(&routes, routesCount);
+
 }
 

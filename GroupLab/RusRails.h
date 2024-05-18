@@ -9,7 +9,7 @@ private:
 	unsigned id;
 	short limit;
 	time_t start = {};
-	int curSt; //мб и не нужно, я вот так щас задумался.............
+	int curSt; //Г¬ГЎ ГЁ Г­ГҐ Г­ГіГ¦Г­Г®, Гї ГўГ®ГІ ГІГ ГЄ Г№Г Г± Г§Г Г¤ГіГ¬Г Г«Г±Гї.............
 	int path;
 	int arrivalTime;
 	int stationId;
@@ -34,7 +34,7 @@ public:
 class Ticket {
 private:
 	unsigned int id;
-	char name[40] = {};//надеюсь 40 символов для фио хватит, хаххаха
+	char name[40] = {};//Г­Г Г¤ГҐГѕГ±Гј 40 Г±ГЁГ¬ГўГ®Г«Г®Гў Г¤Г«Гї ГґГЁГ® ГµГўГ ГІГЁГІ, ГµГ ГµГµГ ГµГ 
 	int startSt;
 	int trainId;
 	int finish;
@@ -112,10 +112,12 @@ namespace rjd {
 	void remove(std::vector<Route>* routes, int* n);
 	void edit(std::vector<Route>* routes, int n);
 
+
 	void create(std::vector<Station>* station, int* n);
 	void read(std::vector<Station>* station, int* n);
 	void add(std::vector<Station>* station, int* n);
 	void remove(std::vector<Station>* station, int* n);
 	void edit(std::vector<Station>* station, int n);
 	void print(std::vector<Station>* station, int n);
+
 }
