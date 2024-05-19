@@ -1,12 +1,15 @@
 #pragma once
+#include <iostream>
 #include <vector>
+#include <string>
+#include <ctime>
 
 class Train {
 private:
 	unsigned id;
 	short limit;
 	time_t start = {};
-	int curSt; //ìá è íå íóæíî, ÿ âîò òàê ùàñ çàäóìàëñÿ.............
+	int curSt; //Ã¬Ã¡ Ã¨ Ã­Ã¥ Ã­Ã³Ã¦Ã­Ã®, Ã¿ Ã¢Ã®Ã² Ã²Ã Ãª Ã¹Ã Ã± Ã§Ã Ã¤Ã³Ã¬Ã Ã«Ã±Ã¿.............
 	int path;
 	int arrivalTime;
 	int stationId;
@@ -14,13 +17,14 @@ public:
 	friend std::istream& operator >>(std::istream& in, Train& r);
 	friend std::ostream& operator <<(std::ostream& out, const Train& r);
 	void setId(int x);
-	int getId();
 	int getLim();
+	int setLim(int x);
 	std::time_t getStart();
 	int getPath();
 	void setPath();
 	int getCurStation();
 	void changeCurStation(int x);
+	//Train();
 	Train(int id, int arrivalTime, int stationId);
 	int getId() const;
 	int getArrivalTime() const;
@@ -30,11 +34,12 @@ public:
 class Ticket {
 private:
 	unsigned int id;
-	char name[40] = {};//íàäåþñü 40 ñèìâîëîâ äëÿ ôèî õâàòèò, õàõõàõà
+	char name[40] = {};//Ã­Ã Ã¤Ã¥Ã¾Ã±Ã¼ 40 Ã±Ã¨Ã¬Ã¢Ã®Ã«Ã®Ã¢ Ã¤Ã«Ã¿ Ã´Ã¨Ã® ÃµÃ¢Ã Ã²Ã¨Ã², ÃµÃ ÃµÃµÃ ÃµÃ 
 	int startSt;
 	int trainId;
 	int finish;
 public:
+	//Ticket();
 	friend std::istream& operator >>(std::istream& in, Ticket& r);
 	friend std::ostream& operator <<(std::ostream& out, const Ticket& r);
 	void setId(int x);
@@ -53,7 +58,7 @@ private:
 	int stationCount;
 
 public:
-	Route();
+	Route() {};
 	Route(int id, int* trains, int* stations, int trainCount, int stationCount);
 
 	friend std::istream& operator>>(std::istream& is, Route& route);
@@ -62,33 +67,32 @@ public:
 	int getId() const;
 	const int* getTrains() const;
 	const int* getStations() const;
-
+	void setId(int x);
+	int getStatinsCount();
+	int getTrainsCount();
 	void addTrain(int trainId);
 	void removeTrain(int trainId);
 	void changeStations(int* newStations, int newStationCount);
 	void addStation(int stationId);
 	void removeStation(int stationId);
 };
-namespace route {
-	void addRoute(const Route& route);
-	void deleteRoute(int routeId);
-
-}
 class Station {
 private:
 	int id;
 	char name[20];
 	int adjacentStations[5];
 	int distances[5];
+	int numAdjacent;
 
 public:
-	Station();
+	Station() : numAdjacent(0) {};
 	Station(int id, const char* name, int* adjacentStations, int* distances);
 
 	friend std::istream& operator>>(std::istream& is, Station& station);
 	friend std::ostream& operator<<(std::ostream& os, const Station& station);
 
-	int getId() const;
+	int getId();
+	void setId(int _id);
 	const char* getName() const;
 	const int* getAdjacentStations() const;
 	const int* getDistances() const;
@@ -97,13 +101,10 @@ public:
 	void addAdjacentStation(int adjacentId, int distance);
 	void removeAdjacentStation(int adjacentId);
 	void editAdjacentStation(int index, int newAdjacentId, int newDistance);
-	void getTrainSchedule(const std::vector<Train>& trains) const;
-
+	void getTrainSchedule(const Train* trains);
 };
-namespace station {
-	void addStation(const Station& station);
-	void deleteStation(int stationId);
-}
+
+
 namespace rjd {
 	void create(std::vector<Route>* routes, int* n);
 	void read(std::vector<Route>* routes, int* n);
@@ -119,10 +120,10 @@ namespace rjd {
 	void edit(std::vector<Station>* station, int n);
 	void print(std::vector<Station>* station, int n);
 
-	void write(const vector<Ticket>& tickets);
-	void create(std::vector<Ticket>& tickets, int& ticketCount);
-	void read(std::vector<Ticket>& tickets, int& ticketCount);
-	void add(std::vector<Ticket>& tickets, int& ticketCount);
-	void remove(std::vector<Ticket>& tickets, int& ticketCount);
-	void edit(std::vector<Ticket>& tickets, int& ticketCount);
+	void write(const vector<Ticket>* tickets);
+	void create(std::vector<Ticket>* tickets, int* ticketCount);
+	void read(std::vector<Ticket>* tickets, int* ticketCount);
+	void add(std::vector<Ticket>* tickets, int* ticketCount);
+	void remove(std::vector<Ticket>* tickets, int* ticketCount);
+	void edit(std::vector<Ticket>* tickets, int ticketCount);
 }
