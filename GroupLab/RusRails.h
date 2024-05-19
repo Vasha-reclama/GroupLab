@@ -48,6 +48,7 @@ public:
 	int getFinish();
 	int getTrain();
 };
+
 class Route {
 private:
 	int id;
@@ -75,7 +76,6 @@ public:
 	void addStation(int stationId);
 	void removeStation(int stationId);
 };
-
 class Station {
 private:
 	int id;
@@ -120,4 +120,10 @@ namespace rjd {
 	void edit(std::vector<Station>* station, int n);
 	void print(std::vector<Station>* station, int n);
 
+	void write(const vector<Ticket>* tickets);
+	void create(std::vector<Ticket>* tickets, int* ticketCount);
+	void read(std::vector<Ticket>* tickets, int* ticketCount);
+	void add(std::vector<Ticket>* tickets, int* ticketCount);
+	void remove(std::vector<Ticket>* tickets, int* ticketCount);
+	void edit(std::vector<Ticket>* tickets, int ticketCount);
 }

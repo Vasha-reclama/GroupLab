@@ -4,6 +4,7 @@
 #include<vector>
 using namespace std;
 
+
 namespace rjd {
 	void write(vector<Route>* routes, int n) {
 		ofstream out;

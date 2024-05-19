@@ -1,5 +1,6 @@
 #include<iostream>
 #include<ctime>
+#include<fstream>
 #include<string>
 #include"RusRails.h"
 
@@ -73,3 +74,4 @@ int Ticket::getStart() {
 int Ticket::getTrain() {
 	return trainId;
 }
+
