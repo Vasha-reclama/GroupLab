@@ -22,7 +22,7 @@ namespace rjd {
 		setlocale(LC_ALL, "Ru");
 		cout << "n=";
 		if (!(cin >> (*n)).good()) {
-			cout << "Syntaxis error" << endl;
+			cout << "Syntax error" << endl;
 			return;
 		}
 
@@ -35,17 +35,17 @@ namespace rjd {
 				return;
 			}*/
 			int newStCount;
-			cout << "Введите кол-во станций" << endl;
+			cout << "Enter amount of stations" << endl;
 			if (!(cin >> newStCount).good()) {
 				cout << "Syntax error" << endl;
 				return;
 			}
 			if (newStCount > 20) {
-				cout << "Станций не может быть больше 20" << endl;
+				cout << "lim = 20" << endl;
 				return;
 			}
 			int* newSt = new int[newStCount];
-			cout << "Введите id первой станции" << endl;
+			cout << "enter firts id" << endl;
 			if (!(cin >> newSt[0]).good()) {
 				cout << "Syntax error" << endl;
 				return;
@@ -58,7 +58,7 @@ namespace rjd {
 				}
 			}
 			if (x == -1) {
-				cout << "Такой станции не существует" << endl;
+				cout << "error" << endl;
 				return;
 			}
 			Station* tempSt=nullptr;
@@ -72,22 +72,23 @@ namespace rjd {
 						tempSt = &(stations->at(j));
 						break;
 					}
-					if (!(cin >> newSt[i]).good()) {
-						cout << "Syntax error" << endl;
-						return;
-					}
-					bool inside = false;
-					for (int j = 0; j < tempSt->getNumAdj(); j++) {
-						if (newSt[i] == tempSt->getAdjacentStations()[j]) {
-							inside = true;
-							break;
-						}
-					}
-					if (!inside) {
-						cout << "Нет связи" << endl;
-						return;
-					}
 					
+					
+				}
+				if (!(cin >> newSt[i]).good()) {
+					cout << "Syntax error" << endl;
+					return;
+				}
+				bool inside = false;
+				for (int j = 0; j < tempSt->getNumAdj(); j++) {
+					if (newSt[i] == tempSt->getAdjacentStations()[j]) {
+						inside = true;
+						break;
+					}
+				}
+				if (!inside) {
+					cout << "No connection" << endl;
+					return;
 				}
 
 			}
@@ -109,7 +110,7 @@ namespace rjd {
 		ifstream in;
 		in.open("routes", ios_base::binary);
 		if (!in.is_open()) {
-			cout << "Ôàéë íå áûë îòêðûò êîððåêòíî" << endl;
+			cout << "cant open file" << endl;
 			return;
 		}
 		in.read(reinterpret_cast<char*>(n), sizeof(int));
@@ -120,12 +121,66 @@ namespace rjd {
 		print(routes, *n);
 	}
 
-	void add(vector<Route>* routes, int* n) {
+	void add(vector<Route>* routes, int* n, vector<Station>* stations, int stationCount) {
 		Route temp;
-		if (!(cin >> temp).good() or temp.getStatinsCount() > 20 or temp.getTrainsCount() > 10) {
-			cout << "×òî-òî ïîøëî íå òàê" << endl;
+		int newStCount;
+		cout << "Enter amount of stations" << endl;
+		if (!(cin >> newStCount).good()) {
+			cout << "Syntax error" << endl;
 			return;
 		}
+		if (newStCount > 20) {
+			cout << "lim = 20" << endl;
+			return;
+		}
+		int* newSt = new int[newStCount];
+		cout << "enter firts id" << endl;
+		if (!(cin >> newSt[0]).good()) {
+			cout << "Syntax error" << endl;
+			return;
+		}
+		int x = -1;
+		for (int i = 0; i < stationCount; i++) {
+			if (newSt[0] == stations->at(i).getId()) {
+				x = i;
+				break;
+			}
+		}
+		if (x == -1) {
+			cout << "error" << endl;
+			return;
+		}
+		Station* tempSt = nullptr;
+		for (int i = 1; i < newStCount; i++) {
+			for (int j = 0; j < stationCount; j++) {
+				if (newSt[i - 1] == stations->at(j).getId()) {
+					for (int k = 0; k < stations->at(j).getNumAdj(); k++) {
+						cout << stations->at(j).getAdjacentStations()[k] << " ";
+					}
+					cout << endl;
+					tempSt = &(stations->at(j));
+					break;
+				}
+				if (!(cin >> newSt[i]).good()) {
+					cout << "Syntax error" << endl;
+					return;
+				}
+				bool inside = false;
+				for (int j = 0; j < tempSt->getNumAdj(); j++) {
+					if (newSt[i] == tempSt->getAdjacentStations()[j]) {
+						inside = true;
+						break;
+					}
+				}
+				if (!inside) {
+					cout << "No connection" << endl;
+					return;
+				}
+
+			}
+
+		}
+		temp.changeStations(newSt, newStCount);
 
 		temp.setId(routes->at((*n) - 1).getId() + 1);
 
@@ -136,10 +191,10 @@ namespace rjd {
 
 	void remove(vector<Route>* routes, int* n) {
 		print(routes, *n);
-		cout << "Âûáåðèòå ìàðøðóò äëÿ óäàëåíèÿ" << endl;
+		cout << "Enter id to remove" << endl;
 		int id;
 		if (!(cin >> id).good()) {
-			cout << "Synctaxis error" << endl;
+			cout << "Syntax error" << endl;
 			return;
 		}
 
@@ -162,10 +217,10 @@ namespace rjd {
 
 	void edit(vector<Route>* routes, int n, vector<Station>* stations, int stationCount) {
 		print(routes, n);
-		cout << "Âûáåðèòå ìàðøðóò äëÿ ðåäàêòèðîâàíèÿ" << endl;
+		cout << "Enter id to edit" << endl;
 		int id;
 		if (!(cin >> id).good()) {
-			cout << "Synctaxis error" << endl;
+			cout << "Syntax error" << endl;
 			return;
 		}
 		Route* temp = nullptr;
@@ -182,20 +237,46 @@ namespace rjd {
 		cout << *temp << endl;
 		
 		int key1;
-		cout << "1-äîáàâèòü ñòàíöèþ, 2-ïåðåçàïèñàòü ïîñëåäîâàòåëüíîñòü" << endl;
+		cout << "1-add station, 2-change stations" << endl;
 		if (!(cin >> key1).good()) {
-			cout << "syntaxis error" << endl;
+			cout << "Syntax error" << endl;
 			return;
 		}
 		switch (key1) {
 			case 1: {
-				cout << "Âûáåðèòå ñòàíöèþ" << endl;//ïåðåäåëàòü, êîãäà áóäåò ãîòîâà òàáëèöà ñòàíöèé
+				Station* tempSt = nullptr;
+				for (int i = 0; i < stationCount; i++) {
+					if (stations->at(i).getId() == temp->getStations()[temp->getStatinsCount() - 1]) {
+						tempSt = &(stations->at(i));
+						break;
+					}
+				}
+				if (tempSt == nullptr) {
+					cout << "error" << endl;
+					return;
+				}
+				for (int i = 0; tempSt->getNumAdj(); i++) {
+					cout << tempSt->getAdjacentStations()[i]<<" ";
+				}
+				cout << endl;
 				int x;
 				if (!(cin >> x).good()) {
-					cout << "Syntaxis error" << endl;
+					cout << "Syntax error" << endl;
+					return;
+				}
+				bool inside = false;
+				for (int i = 0; i < tempSt->getNumAdj(); i++) {
+					if (x == tempSt->getAdjacentStations()[i]) {
+						inside = true;
+						break;
+					}
+				}
+				if (!inside) {
+					cout << "error" << endl;
 					return;
 				}
 				temp->addStation(x);
+				write(routes, n);
 			}
 				  break;
 			case 2: {
@@ -259,7 +340,7 @@ namespace rjd {
 				temp->changeStations(newSt, newStCount);
 				  break;
 			}
-				  break;
+				  break; // TODO unused
 		}
 		
 		write(routes, n);

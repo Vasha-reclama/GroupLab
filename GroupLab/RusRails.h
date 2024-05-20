@@ -110,7 +110,7 @@ namespace rjd {
 	void write(std::vector<Route>* routes, int n);
 	void create(std::vector<Route>* routes, int* n, std::vector<Station>* stations, int stationCount);
 	void read(std::vector<Route>* routes, int* n);
-	void add(std::vector<Route>* routes, int* n);
+	void add(std::vector<Route>* routes, int* n, std::vector<Station>* stations, int stationCount);
 	void remove(std::vector<Route>* routes, int* n);
 	void edit(std::vector<Route>* routes, int n, std::vector<Station>* stations, int stationCount);
 

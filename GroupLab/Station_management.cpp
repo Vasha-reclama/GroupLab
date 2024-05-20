@@ -47,7 +47,7 @@ namespace rjd {
 		ifstream in;
 		in.open("stations.bin", ios_base::binary);
 		if (!in.is_open()) {
-			cout << "���� �� ��� ������ ���������" << endl;
+			cout << "error" << endl;
 			return;
 		}
 		in.read(reinterpret_cast<char*>(n), sizeof(int));
@@ -59,7 +59,7 @@ namespace rjd {
 	void add(vector<Station>* station, int* n) {
 		Station temp;
 		if (!(cin >> temp).good()) {
-			cout << "���-�� ����� �� ���" << endl;
+			cout << "somthing went wrong" << endl;
 			return;
 		}
 		temp.setId(station->at((*n) - 1).getId() + 1);
@@ -70,7 +70,7 @@ namespace rjd {
 
 	void remove(vector<Station>* station, int* n) {
 		print(station, *n);
-		cout << "�������� id ������� ��� ��������" << endl;
+		cout << "enter id to remove" << endl;
 		int id = 0;
 		if (!(cin >> id).good()) {
 			cout << "Syntaxis error" << endl;
@@ -94,7 +94,7 @@ namespace rjd {
 
 	void edit(vector<Station>* station, int n) {
 		//print(station, n);
-		cout << "�������� id ������� ��� ��������������" << endl;
+		cout << "enter id to edit" << endl;
 		int id;
 		if (!(cin >> id).good()) {
 			cout << "Syntaxis error" << endl;
@@ -117,20 +117,20 @@ namespace rjd {
 		while (stop != 1) {
 
 			int key1 = 0;
-			cout << "1-�������� ������� �������, 2-������� ������� �������, 3-������������� ������� �������, 4-������������� �������� �������� �������, 5-������ �������, 6-�����(� �����������)" << endl;
+			cout << "1-add adj. station, 2-remove adj. station, 3-edit adj. station, 4-change name, 5-display station, 6-save and exit" << endl;
 			if (!(cin >> key1).good()) {
 				cout << "syntax error" << endl;
 				//return;
 			}
 			switch (key1) {
 			case 1: {
-				cout << "������� ����� ������� ������� ��� ����������: ";
+				cout << "enter id: ";
 				int num = 0;
 				if (!(cin >> num).good()) {
 					cout << "Syntaxis error" << endl;
 					return;
 				}
-				cout << "������� ��������� ������� ������� ��� ����������: ";
+				cout << "enter distance: ";
 				int distance = 0;
 				if (!(cin >> distance).good()) {
 					cout << "Syntaxis error" << endl;
@@ -141,7 +141,7 @@ namespace rjd {
 			}
 
 			case 2: {
-				cout << "������� id ������� ������� ��� ��������: ";
+				cout << "enter id: ";
 				int num = 0;
 				if (!(cin >> num).good()) {
 					cout << "Syntaxis error" << endl;
@@ -161,7 +161,7 @@ namespace rjd {
 
 				if (index == -1)
 				{
-					cout << "��� id ������� ������� - " << num << endl;
+					cout << "cant find this id " << num << endl;
 					break;
 				}
 
@@ -169,20 +169,20 @@ namespace rjd {
 				break;
 			}
 			case 3: {
-				cout << "������� id ������� ������� ��� ��������������: ";
+				cout << "enter id: ";
 				int index = 0;
 				if (!(cin >> index).good()) {
 					cout << "Syntaxis error" << endl;
 					return;
 				}
 
-				cout << "������� ����� ����� ������� �������: ";
+				cout << "enter new id: ";
 				int num_new = 0;
 				if (!(cin >> num_new).good()) {
 					cout << "Syntaxis error" << endl;
 					return;
 				}
-				cout << "������� ����� ��������� ��� ������� �������: ";
+				cout << "enter new distance: ";
 				int distance_new = 0;
 				if (!(cin >> distance_new).good()) {
 					cout << "Syntaxis error" << endl;
@@ -192,8 +192,8 @@ namespace rjd {
 				break;
 			}
 			case 4: {
-				cout << "������ �������� �������: " << temp->getName() << endl;
-				cout << "������� ����� �������� ��� �������: ";
+				cout << "current name: " << temp->getName() << endl;
+				cout << "new name: ";
 				char name[100];
 				if (!(cin >> name).good()) {
 					cout << "Syntaxis error" << endl;

@@ -139,11 +139,8 @@ void Train::changeCurStation(time_t curTime, vector<Route>* routes, int routesCo
 }
 
 ostream& operator <<(ostream& out, const Train& r) {
-	/*tm timeStart;
-	localtime_s(&timeStart, &parcel.sentTime);*/
-	char start[80];
-	//strftime(start, 80, "%Y-%m-%d %H:%M:%S", &timeStart);
-	out << r.id << " " << r.limit << " " << start << " " << r.curSt << " " << r.path;
+	tm* normalTime = localtime(&r.start);
+	out << r.id << " " << r.limit << " " << normalTime->tm_year + 1900 << " " << normalTime->tm_mon + 1 << " " << normalTime->tm_mday << " " << normalTime->tm_hour << " " << r.curSt << " " << r.path;
 	return out;
 }
 
@@ -151,7 +148,7 @@ istream& operator >>(istream& in, Train& r) {
 	//string time;
 	cout << "Лимит пассажиров: ";
 	int limit;
-	while (!(in >> limit).good() || r.limit < 1 || r.limit > 50) {
+	while (!(in >> r.limit).good() || r.limit < 1 || r.limit > 50) {
 		cout << "Недопустимое значение, введите значение от 1 до 50 " << endl;;
 	}
 	//cout << "Выберите начальную станцию: ";
@@ -180,11 +177,12 @@ istream& operator >>(istream& in, Train& r) {
 }
 
 bool Train::setStartTime(time_t globalTime) {
-	string time;
+	string inputTime;
 	cout << "Введите дату и время отправки (в формате YYYY-MM-DD HH): ";
-	cin >> time;
+	cin.get();
+	getline(cin, inputTime);
 	tm tm = {};
-	istringstream times(time);
+	istringstream times(inputTime);
 	times >> get_time(&tm, "%Y-%m-%d %H");
 	if (times.fail()) {
 	std::cerr << "Ошибка: неверный формат ввода." << std::endl;

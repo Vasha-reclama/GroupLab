@@ -171,6 +171,7 @@ int main() {
 								break;
 							}
 						}
+						break;
 						case 2: {
 							cout << "1-create 2-read 3-add 4-remove 5-edit" << endl;
 							if (!(cin >> key3).good()) {
@@ -190,7 +191,7 @@ int main() {
 							
 							case 3:
 							{
-								rjd::add(&routes, &routesCount);
+								rjd::add(&routes, &routesCount, &stations, stationCount);
 							}
 							break;
 							case 4: {
@@ -207,6 +208,7 @@ int main() {
 						
 
 						}
+							  break;
 						case 3: {
 							cout << "1-create 2-read 3-add 4-remove 5-edit" << endl;
 							if (!(cin >> key3).good()) {
