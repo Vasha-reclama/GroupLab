@@ -137,7 +137,7 @@ namespace rjd {
 	void edit(std::vector<Train>* trains, int n);
 
 }
-}
+
 class Matrix{
 private:
     std::vector<std::vector<int>> data;
