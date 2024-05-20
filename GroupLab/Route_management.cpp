@@ -8,7 +8,7 @@ using namespace std;
 namespace rjd {
 	void write(vector<Route>* routes, int n) {
 		ofstream out;
-		out.open("stations", ios_base::binary);
+		out.open("routes", ios_base::binary);
 		if (!out.is_open()) {
 			cout << "cant open file" << endl;
 			return;
@@ -18,7 +18,8 @@ namespace rjd {
 		out.close();
 	}
 
-	void create(vector<Route>* routes, int* n) {
+	void create(vector<Route>* routes, int* n, vector<Station>* stations, int stationCount) {
+		setlocale(LC_ALL, "Ru");
 		cout << "n=";
 		if (!(cin >> (*n)).good()) {
 			cout << "Syntaxis error" << endl;
@@ -28,11 +29,69 @@ namespace rjd {
 		routes->resize((*n));
 		for (int i = 0; i < *n; i++) {
 			Route temp;
-			if (!(cin >> temp).good() or temp.getStatinsCount() > 20 or temp.getTrainsCount() > 10) {
+			/*if (!(cin >> temp).good() or temp.getStatinsCount() > 20 or temp.getTrainsCount() > 10) {
 
-				cout << "×òî-òî ïîøëî íå òàê" << endl;
+				cout << "Что-то пошло не так" << endl;
+				return;
+			}*/
+			int newStCount;
+			cout << "Введите кол-во станций" << endl;
+			if (!(cin >> newStCount).good()) {
+				cout << "Syntax error" << endl;
 				return;
 			}
+			if (newStCount > 20) {
+				cout << "Станций не может быть больше 20" << endl;
+				return;
+			}
+			int* newSt = new int[newStCount];
+			cout << "Введите id первой станции" << endl;
+			if (!(cin >> newSt[0]).good()) {
+				cout << "Syntax error" << endl;
+				return;
+			}
+			int x = -1;
+			for (int i = 0; i < stationCount; i++) {
+				if (newSt[0] == stations->at(i).getId()) {
+					x = i;
+					break;
+				}
+			}
+			if (x == -1) {
+				cout << "Такой станции не существует" << endl;
+				return;
+			}
+			Station* tempSt=nullptr;
+			for (int i = 1; i < newStCount; i++) {
+				for (int j = 0; j < stationCount; j++) {
+					if (newSt[i - 1] == stations->at(j).getId()) {
+						for (int k = 0; k < stations->at(j).getNumAdj(); k++) {
+							cout << stations->at(j).getAdjacentStations()[k] << " ";
+						}
+						cout << endl;
+						tempSt = &(stations->at(j));
+						break;
+					}
+					if (!(cin >> newSt[i]).good()) {
+						cout << "Syntax error" << endl;
+						return;
+					}
+					bool inside = false;
+					for (int j = 0; j < tempSt->getNumAdj(); j++) {
+						if (newSt[i] == tempSt->getAdjacentStations()[j]) {
+							inside = true;
+							break;
+						}
+					}
+					if (!inside) {
+						cout << "Нет связи" << endl;
+						return;
+					}
+					
+				}
+
+			}
+			temp.changeStations(newSt, newStCount);
 			temp.setId(i);
 			routes->at(i) = temp;
 		}
@@ -48,7 +107,7 @@ namespace rjd {
 
 	void read(vector<Route>* routes, int* n) {
 		ifstream in;
-		in.open("stations", ios_base::binary);
+		in.open("routes", ios_base::binary);
 		if (!in.is_open()) {
 			cout << "Ôàéë íå áûë îòêðûò êîððåêòíî" << endl;
 			return;
@@ -101,7 +160,7 @@ namespace rjd {
 		write(routes, *n);
 	}
 
-	void edit(vector<Route>* routes, int n) {
+	void edit(vector<Route>* routes, int n, vector<Station>* stations, int stationCount) {
 		print(routes, n);
 		cout << "Âûáåðèòå ìàðøðóò äëÿ ðåäàêòèðîâàíèÿ" << endl;
 		int id;
@@ -121,22 +180,14 @@ namespace rjd {
 			return;
 		}
 		cout << *temp << endl;
-		cout << "1-edit stations, 2-edit trains" << endl;
-		cout << "key=";
-		int key;
-		if (!(cin >> key).good()) {
-			cout << "Syntaxis error" << endl;
+		
+		int key1;
+		cout << "1-äîáàâèòü ñòàíöèþ, 2-ïåðåçàïèñàòü ïîñëåäîâàòåëüíîñòü" << endl;
+		if (!(cin >> key1).good()) {
+			cout << "syntaxis error" << endl;
 			return;
 		}
-		switch (key) {
-		case 1: {
-			int key1;
-			cout << "1-äîáàâèòü ñòàíöèþ, 2-ïåðåçàïèñàòü ïîñëåäîâàòåëüíîñòü" << endl;
-			if (!(cin >> key1).good()) {
-				cout << "syntaxis error" << endl;
-				return;
-			}
-			switch (key1) {
+		switch (key1) {
 			case 1: {
 				cout << "Âûáåðèòå ñòàíöèþ" << endl;//ïåðåäåëàòü, êîãäà áóäåò ãîòîâà òàáëèöà ñòàíöèé
 				int x;
@@ -148,66 +199,69 @@ namespace rjd {
 			}
 				  break;
 			case 2: {
-				cout << "Ââåäèòå íîâîå êîë-âî ñòàíöèé" << endl;
-				int newStationCount;
-				int newStation[20];
-				if (!(cin >> newStationCount).good()) {
-					cout << "Syntaxis error" << endl;
+				int newStCount;
+				cout << "Введите кол-во станций" << endl;
+				if (!(cin >> newStCount).good()) {
+					cout << "Syntax error" << endl;
 					return;
 				}
-				for (int i = 0; i < newStationCount; i++) {
-					if (!(cin >> newStation[i]).good()) {
-						cout << "Syntaxis error" << endl;
-						return;
+				if (newStCount > 20) {
+					cout << "Станций не может быть больше 20" << endl;
+					return;
+				}
+				int* newSt = new int[newStCount];
+				cout << "Введите id первой станции" << endl;
+				if (!(cin >> newSt[0]).good()) {
+					cout << "Syntax error" << endl;
+					return;
+				}
+				int x = -1;
+				for (int i = 0; i < stationCount; i++) {
+					if (newSt[0] == stations->at(i).getId()) {
+						x = i;
+						break;
 					}
 				}
-				temp->changeStations(newStation, newStationCount);
-			}
-				  break;
-			}
-		}
-			  break;
-		case 2: {
-			int key2;
-			cout << "1-äîáàâèòü ïîåçä, 2-óäàëèòü ïîåçä" << endl;
-			if (!(cin >> key2).good()) {
-				cout << "Syntaxis error" << endl;
-				return;
-			}
-
-			switch (key2) {
-
-			case 1:
-			{
-				cout << "Âûáåðèòå äîñòïóíûé ïîåçä" << endl;
-				int x;
-				if (!(cin >> x).good()) {
-					cout << "Syntaxis error" << endl;
+				if (x == -1) {
+					cout << "Такой станции не существует" << endl;
 					return;
 				}
-				temp->addTrain(x);
-			}
-			break;
-			case 2: {
-				for (int i = 0; i < temp->getTrainsCount(); i++) {
+				Station* tempSt=nullptr;
+				for (int i = 1; i < newStCount; i++) {
+					for (int j = 0; j < stationCount; j++) {
+						if (newSt[i - 1] == stations->at(j).getId()) {
+							for (int k = 0; k < stations->at(j).getNumAdj(); k++) {
+								cout << stations->at(j).getAdjacentStations()[k] << " ";
+							}
+							cout << endl;
+							tempSt = &(stations->at(j));
+							break;
+						}
+						if (!(cin >> newSt[i]).good()) {
+							cout << "Syntax error" << endl;
+							return;
+						}
+						bool inside = false;
+						for (int j = 0; j < tempSt->getNumAdj(); j++) {
+							if (newSt[i] == tempSt->getAdjacentStations()[j]) {
+								inside = true;
+								break;
+							}
+						}
+						if (!inside) {
+							cout << "Нет связи" << endl;
+							return;
+						}
 
-					cout << temp->getTrains()[i] << " ";
+					}
 
 				}
-				cout << endl;
-				cout << "Âûáåðèòå ïîåçä, êîòîðûé õîòèòå óäàëèòü" << endl;
-				int x;
-				if (!(cin >> x).good()) {
-					cout << "Syntaxis error" << endl;
-					return;
-				}
-				temp->removeTrain(x);
-			}
+				temp->changeStations(newSt, newStCount);
 				  break;
 			}
+				  break;
 		}
-			  break;
-		}
+		
 		write(routes, n);
 	}
 }

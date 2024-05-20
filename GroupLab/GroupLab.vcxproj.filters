@@ -41,7 +41,10 @@
     <ClCompile Include="Train.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Tickets_Base.cpp">
+    <ClCompile Include="Tickets_management.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Train_managment.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

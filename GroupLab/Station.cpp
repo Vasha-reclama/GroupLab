@@ -139,3 +139,6 @@ void Station::getTrainSchedule(const Train* trains) {
 	// реализация получения расписания поездов для станции
 }
 
+int Station::getNumAdj() {
+	return numAdjacent;
+}

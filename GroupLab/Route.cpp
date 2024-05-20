@@ -3,34 +3,25 @@
 #include "RusRails.h"
 using namespace std;
 
-Route::Route(int id, int* trains, int* stations, int trainCount, int stationCount)
-    : id(id), trainCount(trainCount), stationCount(stationCount) {
-    for (int i = 0; i < trainCount; ++i) {
-        this->trains[i] = trains[i];
-    }
-    for (int i = 0; i < stationCount; ++i) {
-        this->stations[i] = stations[i];
-    }
-}
 
 istream& operator>>(istream& is, Route& route) {
     //is >> route.id;
-    cout << "trainCount=";
+    /*cout << "trainCount=";
     if (!(is >> route.trainCount).good())
-        return is;
-    if (route.trainCount > 10) {//ïåðåäåëàòü ïîñëå òîãî êàê áóäåò ãîòîâà òàáëèöà ïîåçäîâ
-        cout << "Ïðåâûøåí ëèìèò ïîåçäîâ";
-        return is;
-    }
-    for (int i = 0; i < route.trainCount; ++i) {
-        cout << "Ââåäèòå ïîåçä íîìåð " << i + 1 << endl;
-        if (!(is >> route.trains[i]).good())
-            return is;
-    }
-    cout << "station count=";
+        return is;*/
+    //if (route.trainCount > 10) {//ïåðåäåëàòü ïîñëå òîãî êàê áóäåò ãîòîâà òàáëèöà ïîåçäîâ
+    //    cout << "Ïðåâûøåí ëèìèò ïîåçäîâ";
+    //    return is;
+    //}
+    //for (int i = 0; i < route.trainCount; ++i) {
+    //    cout << "Ââåäèòå ïîåçä íîìåð " << i + 1 << endl;
+    //    if (!(is >> route.trains[i]).good())
+    //        return is;
+    //}
+    /*cout << "station count=";
     if (!(is >> route.stationCount).good())
-        return is;
-    if (route.stationCount > 20) {
+        return is;*/
+   /* if (route.stationCount > 20) {
         cout << "Ïðåâûøåí ëèìèò ñòàíöèé";
         return is;
     }
@@ -40,7 +31,7 @@ istream& operator>>(istream& is, Route& route) {
             cout << "Syntaxis error" << endl;
             return is;
         }
-    }
+    }*/
     return is;
 }
 

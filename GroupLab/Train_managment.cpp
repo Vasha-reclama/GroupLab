@@ -5,7 +5,7 @@
 using namespace std;
 
 namespace rjd {
-    void writeTrains(vector<Train>* trains, int n) {
+    void write(vector<Train>* trains, int n) {
         ofstream out;
         out.open("trains", ios_base::binary);
         if (!out.is_open()) {
@@ -17,7 +17,7 @@ namespace rjd {
         out.close();
     }
 
-    void createTrains(vector<Train>* trains, int* n) {
+    void create(vector<Train>* trains, int* n, time_t globalTime, vector<Route>* routes, int routesCount) {
         cout << "n=";
         if (!(cin >> (*n)).good()) {
             cout << "Syntaxis error" << endl;
@@ -30,10 +30,18 @@ namespace rjd {
                 cout << "Что-то пошло не так" << endl;
                 return;
             }
-            temp.setId = i;
+            temp.setId(i);
+            if (!temp.setStartTime(globalTime)) {
+                cout << "Что-то пошло не так" << endl;
+                return;
+            }
+            if (!temp.setPath(routes, routesCount)) {
+                cout << "Что-то пошло не так" << endl;
+                return;
+            }
             trains->at(i) = temp;
         }
-        writeTrains(trains, *n);
+        write(trains, *n);
     }
 
     void printTrains(vector<Train>* trains, int n) {
@@ -43,7 +51,7 @@ namespace rjd {
         }
     }
 
-    void readTrains(vector<Train>* trains, int* n) {
+    void read(vector<Train>* trains, int* n) {
         ifstream in;
         in.open("trains", ios_base::binary);
         if (!in.is_open()) {
@@ -56,7 +64,7 @@ namespace rjd {
         printTrains(trains, *n);
     }
 
-    void addTrain(vector<Train>* trains, int* n) {
+    void add(vector<Train>* trains, int* n) {
         Train temp;
         if (!(cin >> temp).good()) {
             cout << "Что-то пошло не так" << endl;
@@ -64,10 +72,10 @@ namespace rjd {
         }
         trains->push_back(temp);
         (*n)++;
-        writeTrains(trains, *n);
+        write(trains, *n);
     }
 
-    void removeTrain(vector<Train>* trains, int* n) {
+    void remove(vector<Train>* trains, int* n) {
         printTrains(trains, *n);
         cout << "Выберите поезд для удаления" << endl;
         int id;
@@ -88,10 +96,10 @@ namespace rjd {
         }
         trains->erase(trains->begin() + x);
         (*n)--;
-        writeTrains(trains, *n);
+        write(trains, *n);
     }
 
-    void editTrain(vector<Train>* trains, int n) {
+    void edit(vector<Train>* trains, int n) {
         printTrains(trains, n);
         cout << "Выберите поезд для редактирования" << endl;
         int id;
@@ -137,7 +145,7 @@ namespace rjd {
                 
             }
         }
-        writeTrains(trains, n);
+        write(trains, n);
         return;
     }
 }

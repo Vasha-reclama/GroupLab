@@ -3,33 +3,9 @@
 #include <vector>
 #include <string>
 #include <ctime>
+class Train;
 
-class Train {
-private:
-	unsigned id;
-	short limit;
-	time_t start = {};
-	int curSt; //ìá è íå íóæíî, ÿ âîò òàê ùàñ çàäóìàëñÿ.............
-	int path;
-	int arrivalTime;
-	int stationId;
-public:
-	friend std::istream& operator >>(std::istream& in, Train& r);
-	friend std::ostream& operator <<(std::ostream& out, const Train& r);
-	void setId(int x);
-	int getLim();
-	int setLim(int x);
-	std::time_t getStart();
-	int getPath();
-	void setPath();
-	int getCurStation();
-	void changeCurStation(int x);
-	//Train();
-	Train(int id, int arrivalTime, int stationId);
-	int getId() const;
-	int getArrivalTime() const;
-	int getStationId() const;
-};
+
 
 class Ticket {
 private:
@@ -52,14 +28,12 @@ public:
 class Route {
 private:
 	int id;
-	int trains[10];
-	int stations[20];
-	int trainCount;
-	int stationCount;
+	int trains[10] = {};
+	int stations[20] = {};
+	int trainCount = {};
+	int stationCount = {};
 
 public:
-	Route() {};
-	Route(int id, int* trains, int* stations, int trainCount, int stationCount);
 
 	friend std::istream& operator>>(std::istream& is, Route& route);
 	friend std::ostream& operator<<(std::ostream& os, const Route& route);
@@ -102,17 +76,45 @@ public:
 	void removeAdjacentStation(int adjacentId);
 	void editAdjacentStation(int index, int newAdjacentId, int newDistance);
 	void getTrainSchedule(const Train* trains);
+	int getNumAdj();
+};
+class Train {
+private:
+	unsigned id;
+	short limit;
+	time_t start = {};
+	int curSt; //ìá è íå íóæíî, ÿ âîò òàê ùàñ çàäóìàëñÿ.............
+	int path;
+	bool direction = true;
+	//int arrivalTime;
+	//int stationId;
+public:
+	friend std::istream& operator >>(std::istream& in, Train& r);
+	friend std::ostream& operator <<(std::ostream& out, const Train& r);
+	void setId(int x);
+	int getLim();
+	void setLim(int x);
+	std::time_t getStart();
+	int getPath();
+	bool setPath(std::vector<Route>* routes, int routesCount);
+	int getCurStation();
+	void changeCurStation(time_t curTime, std::vector<Route>* routes, int routesCount, std::vector<Station>* stations);
+	bool setStartTime(time_t globalTime);
+	int getId() const;
+	int getArrivalTime() const;
+	int getStationId() const;
 };
 
 
 namespace rjd {
-	void create(std::vector<Route>* routes, int* n);
+	void write(std::vector<Route>* routes, int n);
+	void create(std::vector<Route>* routes, int* n, std::vector<Station>* stations, int stationCount);
 	void read(std::vector<Route>* routes, int* n);
 	void add(std::vector<Route>* routes, int* n);
 	void remove(std::vector<Route>* routes, int* n);
-	void edit(std::vector<Route>* routes, int n);
+	void edit(std::vector<Route>* routes, int n, std::vector<Station>* stations, int stationCount);
 
-
+	void write(std::vector<Station>* station, int n);
 	void create(std::vector<Station>* station, int* n);
 	void read(std::vector<Station>* station, int* n);
 	void add(std::vector<Station>* station, int* n);
@@ -120,10 +122,18 @@ namespace rjd {
 	void edit(std::vector<Station>* station, int n);
 	void print(std::vector<Station>* station, int n);
 
-	void write(const vector<Ticket>* tickets);
+	//void write(std::vector<Ticket>* tickets, int n);
 	void create(std::vector<Ticket>* tickets, int* ticketCount);
 	void read(std::vector<Ticket>* tickets, int* ticketCount);
 	void add(std::vector<Ticket>* tickets, int* ticketCount);
 	void remove(std::vector<Ticket>* tickets, int* ticketCount);
 	void edit(std::vector<Ticket>* tickets, int ticketCount);
+
+	void write(std::vector<Train>* trains, int n);
+	void create(std::vector<Train>* trains, int* n, time_t globalTime, std::vector<Route>* routes, int routesCount);
+	void read(std::vector<Train>* trains, int* n);
+	void add(std::vector<Train>* trains, int* n);
+	void remove(std::vector<Train>* trains, int* n);
+	void edit(std::vector<Train>* trains, int n);
+
 }
