@@ -137,3 +137,20 @@ namespace rjd {
 	void edit(std::vector<Train>* trains, int n);
 
 }
+}
+class Matrix{
+private:
+    std::vector<std::vector<int>> data;
+    int rows;
+    int cols;
+
+public:
+    Matrix(int rows, int cols);
+    int getRows() const;
+    int getCols() const;
+    std::vector<int>& operator[](int index);
+    const std::vector<int>& operator[](int index) const;
+    Matrix operator+(const Matrix& other) const;
+    Matrix operator*(const Matrix& other) const;
+    Matrix sumOfPowers(int n);
+};
