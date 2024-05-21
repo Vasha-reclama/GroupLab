@@ -103,6 +103,7 @@ public:
 	int getId() const;
 	int getArrivalTime() const;
 	int getStationId() const;
+	Train* getPasAndTime(std::vector<Ticket>* tickets, int ticketCount, std::vector<Station>* stations, int stationCount, std::vector<Route>* routes, int routesCount, int stationA, int stationB);
 };
 
 
@@ -125,15 +126,15 @@ namespace rjd {
 	//void write(std::vector<Ticket>* tickets, int n);
 	void create(std::vector<Ticket>* tickets, int* ticketCount);
 	void read(std::vector<Ticket>* tickets, int* ticketCount);
-	void add(std::vector<Ticket>* tickets, int* ticketCount);
+	void add(std::vector<Ticket>* tickets, int* ticketCount, Ticket newTicket);
 	void remove(std::vector<Ticket>* tickets, int* ticketCount);
 	void edit(std::vector<Ticket>* tickets, int ticketCount);
 
 	void write(std::vector<Train>* trains, int n);
 	void create(std::vector<Train>* trains, int* n, time_t globalTime, std::vector<Route>* routes, int routesCount);
 	void read(std::vector<Train>* trains, int* n);
-	void add(std::vector<Train>* trains, int* n);
-	void remove(std::vector<Train>* trains, int* n);
+	void add(std::vector<Train>* trains, int* n, time_t globalTime, std::vector<Route>* routes, int routesCount);
+	void remove(std::vector<Train>* trains, int* n, std::vector<Route>* routes,int routesCount);
 	void edit(std::vector<Train>* trains, int n);
 
 }

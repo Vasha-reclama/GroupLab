@@ -48,12 +48,12 @@ namespace rjd {
         write(tickets, *ticketCount);
     }
 
-    void add(vector<Ticket>* tickets, int* ticketCount) {
-        Ticket newTicket;
-        cout << "¬ведите данные дл€ нового билета:"<<endl;
-        if (!(cin >> newTicket).good()) {
-            cout << "Syntax error" << endl;
-            return;
+    void add(vector<Ticket>* tickets, int* ticketCount, Ticket newTicket) {
+        if (*ticketCount == 0) {
+            newTicket.setId(0);
+        }
+        else {
+            newTicket.setId(tickets->end()->getId() + 1);
         }
         tickets->push_back(newTicket);
         (*ticketCount)++;

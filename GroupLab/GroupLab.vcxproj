@@ -135,6 +135,7 @@
     <ClInclude Include="RusRails.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MatrixStation.cpp" />
     <ClCompile Include="Route.cpp" />
     <ClCompile Include="Route_management.cpp" />
     <ClCompile Include="Source.cpp" />

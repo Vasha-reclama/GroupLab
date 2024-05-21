@@ -42,6 +42,7 @@ namespace rjd {
             trains->at(i) = temp;
         }
         write(trains, *n);
+        write(routes, routesCount);
     }
 
     void printTrains(vector<Train>* trains, int n) {
@@ -64,18 +65,32 @@ namespace rjd {
         printTrains(trains, *n);
     }
 
-    void add(vector<Train>* trains, int* n) {
+    void add(vector<Train>* trains, int* n, time_t globalTime, vector<Route>* routes, int routesCount) {
         Train temp;
         if (!(cin >> temp).good()) {
             cout << "Что-то пошло не так" << endl;
             return;
         }
-        trains->push_back(temp);
+        if (*n == 0) {
+            temp.setId(0);
+        }
+        else
+            temp.setId(trains->end()->getId()+1);
+        if (!temp.setStartTime(globalTime)) {
+            cout << "Что-то пошло не так" << endl;
+            return;
+        }
+        if (!temp.setPath(routes, routesCount)) {
+            cout << "Что-то пошло не так" << endl;
+            return;
+        }
         (*n)++;
+        trains->push_back(temp);
         write(trains, *n);
+        write(routes, routesCount);
     }
 
-    void remove(vector<Train>* trains, int* n) {
+    void remove(vector<Train>* trains, int* n, vector<Route>* routes, int routesCount) {
         printTrains(trains, *n);
         cout << "Выберите поезд для удаления" << endl;
         int id;
@@ -90,6 +105,12 @@ namespace rjd {
                 break;
             }
         }
+        for (int i = 0; i < routesCount; i++) {
+            if (routes->at(i).getId() == trains->at(x).getPath()) {
+                routes->at(i).removeTrain(id);
+                break;
+            }
+        }
         if (x == -1) {
             cout << "Search failed" << endl;
             return;
@@ -97,6 +118,7 @@ namespace rjd {
         trains->erase(trains->begin() + x);
         (*n)--;
         write(trains, *n);
+        write(routes, routesCount);
     }
 
     void edit(vector<Train>* trains, int n) {

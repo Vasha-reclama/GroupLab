@@ -9,6 +9,7 @@ using namespace std;
 istream& operator >>(istream& in, Ticket& r) {
 	cout << "‘»ќ=";
 	string str;
+	in.get();
 	getline(in, str);
 	if (str.length() <= 40) {
 		for (int i = 0; i < str.length(); i++) {
@@ -23,29 +24,29 @@ istream& operator >>(istream& in, Ticket& r) {
 			r.name[i] = str[i];
 		}
 	}
-	cout << "список станций" << endl; //(сделать после того, как будет обработаны методы станций)
-	if ((in >> r.startSt).good()) {
-		/*else {
-			in.clear();
-			cout << "Syntaxis error" << endl;
-			return in;
-		}*/
-		cout << "ƒо какой станции вы хотите доехать?" << endl;//¬ывести список допустимых станций(можно реализовать через матрицу достижимости)
-		if ((in >> r.finish).good()) {
-			/*else {
-				cout << "Syntaxis error" << endl;
-				in.clear();
-				return in;
-			}*/
-			cout << "—писок поездов и врем€ прибытие" << endl;// сделать после реализации методов
-			if ((in >> r.trainId).good());
-		}
-	}
-	/*else {
-		in.clear();
-		cout << "Syntaxis error" << endl;
-		return in;
-	}*/
+	//cout << "список станций" << endl; //(сделать после того, как будет обработаны методы станций)
+	//if ((in >> r.startSt).good()) {
+	//	/*else {
+	//		in.clear();
+	//		cout << "Syntaxis error" << endl;
+	//		return in;
+	//	}*/
+	//	cout << "ƒо какой станции вы хотите доехать?" << endl;//¬ывести список допустимых станций(можно реализовать через матрицу достижимости)
+	//	if ((in >> r.finish).good()) {
+	//		/*else {
+	//			cout << "Syntaxis error" << endl;
+	//			in.clear();
+	//			return in;
+	//		}*/
+	//		cout << "—писок поездов и врем€ прибытие" << endl;// сделать после реализации методов
+	//		if ((in >> r.trainId).good());
+	//	}
+	//}
+	///*else {
+	//	in.clear();
+	//	cout << "Syntaxis error" << endl;
+	//	return in;
+	//}*/
 
 	return in;
 }

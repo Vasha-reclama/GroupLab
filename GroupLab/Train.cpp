@@ -87,7 +87,7 @@ void Train::changeCurStation(time_t curTime, vector<Route>* routes, int routesCo
 		}
 		direction = false;
 	}
-	else {
+	if (!direction) {
 		pastTense = start;
 		for (int i = 0; i < temp->getStatinsCount()-1; i++) {
 			int StId = (temp->getStations())[i];
@@ -135,6 +135,7 @@ void Train::changeCurStation(time_t curTime, vector<Route>* routes, int routesCo
 		}
 	}
 	start = curTime + 86400;
+	direction = true;
 	
 }
 
@@ -204,21 +205,147 @@ bool Train::setPath(vector<Route>* routes, int routesCount) {
 		cout << routes->at(i) << endl;
 	}
 	cout << "¬ведите id маршрута" << endl;
-	int id;
-	if (!(cin >> id).good()) {
+	int stid;
+	if (!(cin >> stid).good()) {
 		cout << "Syntax error" << endl;
 		return 0;
 	}
 	Route* temp=nullptr;
 	for (int i = 0; i < routesCount; i++) {
-		if (routes->at(i).getId() == id) {
+		if (routes->at(i).getId() == stid) {
 			temp = &(routes->at(i));
 			break;
 		}
 	}
 	temp->addTrain(id);
 	curSt = temp->getStations()[0];
-	path = id;
+	path = stid;
 
 	return 1;
+}
+
+Train* Train::getPasAndTime(vector<Ticket>* tickets, int ticketCount, vector<Station>* stations, int stationCount, vector<Route>* routes, int routesCount, int stationA, int stationB) {
+	;
+	time_t pasTense = start;
+	Route* tempRoute=nullptr;
+	for (int i = 0; i < routesCount; i++) {
+		if (routes->at(i).getId() == path) {
+			tempRoute = &(routes->at(i));
+			break;
+		}
+	}
+	if (tempRoute == nullptr) {
+		cout << "error" << endl;
+		return NULL;
+	}
+	int a, b;
+	for (int i = 0; i < tempRoute->getStatinsCount(); i++) {
+		if (tempRoute->getStations()[i] == stationA) {
+			a = i;
+		}
+		else if (tempRoute->getStations()[i] == stationB) {
+			b = i;
+		}
+	}
+	bool dir = true;
+	if (a > b)
+		dir = false;
+	if (!dir) {
+		for (int i = 0; i < tempRoute->getStatinsCount() - 1; i++) {
+			int StId = (tempRoute->getStations())[i];
+			int nextStId = (tempRoute->getStations())[i + 1];
+			Station* tempSt = nullptr;
+			for (int j = 0; j < stations->size(); j++) {
+				if (stations->at(j).getId() == StId) {
+					tempSt = &(stations->at(j));
+					break;
+				}
+			}
+			int x;
+			for (int j = 0; j < tempSt->getNumAdj(); j++) {
+				if (tempSt->getAdjacentStations()[j] == nextStId) {
+					x = j;
+					break;
+				}
+			}
+			pasTense += (tempSt->getDistances()[x]) * 3600;
+		}
+		int curPas = 0;
+		for (int i = tempRoute->getStatinsCount() - 1; i > 0; i--) {
+			for (int j = 0; j < ticketCount; j++) {
+				if (tickets->at(j).getStart() == tempRoute->getStations()[i] && tickets->at(i).getTrain() == id)
+					curPas++;
+				else if (i != tempRoute->getStatinsCount() - 1) {
+					if (tickets->at(j).getFinish() == tempRoute->getStations()[i] && tickets->at(i).getTrain() == id)
+						curPas--;
+				}
+			}
+			int StId = tempRoute->getStations()[i];
+			int nextStId = tempRoute->getStations()[i - 1];
+			Station* tempSt = nullptr;
+			for (int j = 0; j < stationCount; j++) {
+				if (stations->at(j).getId() == StId) {
+					tempSt = &(stations->at(j));
+					break;
+				}
+			}
+			int x;
+			for (int j = 0; j < tempSt->getNumAdj(); j++) {
+				if (tempSt->getAdjacentStations()[j] == nextStId) {
+					x = j;
+					break;
+				}
+			}
+			if (tempRoute->getStations()[i] != stationA) {
+				pasTense += (tempSt->getDistances()[x]) * 3600;
+			}
+			else {
+				tm* normalTime = localtime(&pasTense);
+				if (curPas < limit) {
+					cout << id << " " << normalTime->tm_year << " " << normalTime->tm_mon << " " << normalTime->tm_mday << " " << normalTime->tm_hour << " " << curPas << endl;
+					return this;
+				}
+			}
+
+		}
+	}
+	else {
+		int curPas = 0;
+		for (int i = 0; i < tempRoute->getStatinsCount() - 1; i++) {
+			for (int j = 0; j < ticketCount; j++) {
+				if (tickets->at(j).getStart() == tempRoute->getStations()[i] && tickets->at(i).getTrain() == id)
+					curPas++;
+				else if (i != tempRoute->getStatinsCount() - 1) {
+					if (tickets->at(j).getFinish() == tempRoute->getStations()[i] && tickets->at(i).getTrain() == id)
+						curPas--;
+				}
+			}
+			int StId = tempRoute->getStations()[i];
+			int nextStId = tempRoute->getStations()[i + 1];
+			Station* tempSt = nullptr;
+			for (int j = 0; j < stationCount; j++) {
+				if (stations->at(j).getId() == StId) {
+					tempSt = &(stations->at(j));
+					break;
+				}
+			}
+			int x;
+			for (int j = 0; j < tempSt->getNumAdj(); j++) {
+				if (tempSt->getAdjacentStations()[j] == nextStId) {
+					x = j;
+					break;
+				}
+			}
+			if (tempRoute->getStations()[i] != stationA) {
+				pasTense += (tempSt->getDistances()[x]) * 3600;
+			}
+			else {
+				tm* normalTime = localtime(&pasTense);
+				if (curPas < limit) {
+					cout << id << " " << normalTime->tm_year << " " << normalTime->tm_mon << " " << normalTime->tm_mday << " " << normalTime->tm_hour << " " << curPas << endl;
+					return this;
+				}
+			}
+		}
+	}
 }

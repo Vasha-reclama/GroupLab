@@ -36,8 +36,11 @@ istream& operator>>(istream& is, Route& route) {
 }
 
 ostream& operator<<(ostream& os, const Route& route) {
-    os << route.id << " " << route.stationCount << " " << route.stations[0] << "..." << route.stations[route.stationCount - 1] << " " << route.trainCount << " " <<
+    if (route.trainCount > 0)
+        os << route.id << " " << route.stationCount << " " << route.stations[0] << "..." << route.stations[route.stationCount - 1] << " " << route.trainCount << " " <<
         route.trains[0] << "..." << route.trains[route.trainCount - 1];
+    else
+        os << route.id << " " << route.stationCount << " " << route.stations[0] << "..." << route.stations[route.stationCount - 1] << " " << route.trainCount;
     return os;
 }
 
@@ -55,10 +58,11 @@ const int* Route::getStations() const {
 
 void Route::addTrain(int trainId) {
     if (trainCount < 10) {
-        trains[trainCount++] = trainId;
+        trainCount++;
+        trains[trainCount-1] = trainId;
     }
     else {
-        cout << "Äîñòèãíóò ëèìèò ïîåçäîâ" << endl;
+        cout << "cant add train" << endl;
     }
 }
 
@@ -87,7 +91,7 @@ void Route::addStation(int stationId) {
     }
 
     else {
-        cout << "Äîñòèãíóò ëèìèò ñòàíöèé" << endl;
+        cout << "cant add station" << endl;
     }
 }
 

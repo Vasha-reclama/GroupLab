@@ -45,7 +45,7 @@ namespace rjd {
 				return;
 			}
 			int* newSt = new int[newStCount];
-			cout << "enter firts id" << endl;
+			cout << "enter first id" << endl;
 			if (!(cin >> newSt[0]).good()) {
 				cout << "Syntax error" << endl;
 				return;
@@ -134,7 +134,7 @@ namespace rjd {
 			return;
 		}
 		int* newSt = new int[newStCount];
-		cout << "enter firts id" << endl;
+		cout << "enter first id" << endl;
 		if (!(cin >> newSt[0]).good()) {
 			cout << "Syntax error" << endl;
 			return;
@@ -161,24 +161,22 @@ namespace rjd {
 					tempSt = &(stations->at(j));
 					break;
 				}
-				if (!(cin >> newSt[i]).good()) {
-					cout << "Syntax error" << endl;
-					return;
-				}
-				bool inside = false;
-				for (int j = 0; j < tempSt->getNumAdj(); j++) {
-					if (newSt[i] == tempSt->getAdjacentStations()[j]) {
-						inside = true;
-						break;
-					}
-				}
-				if (!inside) {
-					cout << "No connection" << endl;
-					return;
-				}
-
 			}
-
+			if (!(cin >> newSt[i]).good()) {
+				cout << "Syntax error" << endl;
+				return;
+			}
+			bool inside = false;
+			for (int j = 0; j < tempSt->getNumAdj(); j++) {
+				if (newSt[i] == tempSt->getAdjacentStations()[j]) {
+					inside = true;
+					break;
+				}
+			}
+			if (!inside) {
+				cout << "No connection" << endl;
+				return;
+			}
 		}
 		temp.changeStations(newSt, newStCount);
 

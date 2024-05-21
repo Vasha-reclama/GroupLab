@@ -15,10 +15,10 @@ int main() {
 	vector<Train> trains;
 	vector<Station> stations;
 	vector<Ticket> tickets;
-	int routesCount;
-	int trainsCount;
-	int stationCount;
-	int ticketsCount;
+	int routesCount=0;
+	int trainsCount=0;
+	int stationCount=0;
+	int ticketsCount=0;
 	ifstream in;
 	in.open("settings", ios_base::binary);
 	if (!in.is_open()) {
@@ -157,12 +157,13 @@ int main() {
 								  break;
 							case 3:
 							{
-								rjd::add(&trains, &trainsCount);
+								rjd::add(&trains, &trainsCount, globalTime, &routes, routesCount);
 							}
 							break;
 							case 4: {
-								rjd::remove(&trains, &trainsCount);
+								rjd::remove(&trains, &trainsCount, &routes, routesCount);
 							}
+								  break;
 							case 5: {
 								rjd::edit(&trains, trainsCount);
 							}
@@ -197,6 +198,7 @@ int main() {
 							case 4: {
 								rjd::remove(&routes, &routesCount);
 							}
+								  break;
 							case 5: {
 								rjd::edit(&routes, routesCount, &stations, stationCount);
 							}
@@ -234,6 +236,7 @@ int main() {
 							case 4: {
 								rjd::remove(&stations, &stationCount);
 							}
+								  break;
 							case 5: {
 								rjd::edit(&stations, stationCount);
 							}
@@ -256,6 +259,127 @@ int main() {
 					break;
 				}
 			}
+		}
+			  break;
+		case 2: {
+			if (stationCount == 0)
+				rjd::read(&stations, &stationCount);
+			if (routesCount == 0)
+				rjd::read(&routes, &routesCount);
+			if (trainsCount == 0)
+				rjd::read(&trains, &trainsCount);
+			Matrix matrix(stationCount, stationCount);
+			for (int i = 0; i < stationCount; i++) {
+				for (int j = 0; j < stationCount; j++) {
+					int x = 0;
+					for (int k = 0; k < stations[i].getNumAdj(); k++) {
+						if (j == stations[i].getAdjacentStations()[k]) {
+							x = 1;
+							break;
+						}
+					}
+					matrix[i][j] = x;
+				}
+			}
+			Matrix powerMatrix = matrix.sumOfPowers(stationCount);
+			cout << "Выберите первую станцию" << endl;
+			int stA;
+			int a;
+			if (!(cin >> stA).good()) {
+				cout << "Syntax error" << endl;
+				break;
+			}
+			bool inside = false;
+			for (int i = 0; i < stationCount; i++) {
+				if (stA == stations[i].getId()) {
+					a = i;
+					inside = true;
+					break;
+				}
+			}
+			if (!inside) {
+				cout << "error" << endl;
+				break;
+			}
+			cout << "Выберите вторую станцию" << endl;
+			int stB;
+			int b;
+			if (!(cin >> stB).good()) {
+				cout << "Syntax error" << endl;
+				break;
+			}
+			inside = false;
+			for (int i = 0; i < stationCount; i++) {
+				if (stB == stations[i].getId()) {
+					b = i;
+					inside = true;
+					break;
+				}
+			}
+			if (!inside) {
+				cout << "error" << endl;
+				break;
+			}
+			if (powerMatrix[a][b] == 0) {
+				cout << "Не существует пути от " << stA << " до " << stB << endl;
+				break;
+			}
+			vector<Route> correct;
+			for (int i = 0; i < routesCount; i++) {
+				bool insideA=false;
+				bool insideB=false;
+				for (int j = 0; j < routes[i].getStatinsCount(); j++) {
+					if (routes[i].getStations()[j] == stA) {
+						insideA = true;
+					}
+					else if (routes[i].getStations()[j] == stB) {
+						insideB = true;
+					}
+				}
+				if (insideA && insideB) {
+					correct.push_back(routes[i]);
+				}
+			}
+			if (correct.empty() == true) {
+				cout << "В данный момент не существует маршрута для соответсвующих станций" << endl;
+				break;
+			}
+			vector<Train*> fin;
+			for (int i = 0; i < correct.size(); i++) {
+				bool inside=false;
+				for (int j = 0; j < correct[i].getTrainsCount(); j++) {
+					for (int k = 0; k < trainsCount; k++) {
+						if (trains[k].getId() == correct[i].getTrains()[j]) {
+							inside = true;
+							Train* temp = trains[k].getPasAndTime(&tickets, ticketsCount, &stations, stationCount, &routes, routesCount, stA, stB);
+							fin.push_back(temp);
+							break;
+						}
+					}
+					/*if (inside)
+						break;*/
+				}
+			}
+			cout << "Выберите поезд" << endl;
+			int trainId;
+			if (!(cin >> trainId).good()) {
+				cout << "Syntax error" << endl;
+				break;
+			}
+			inside = false;
+			for (int i = 0; i < fin.size(); i++) {
+				if (fin[i]->getId() == trainId) {
+					inside = true;
+					break;
+				}
+			}
+			if (!inside) {
+				cout << "error" << endl;
+				break;
+			}
+			Ticket newTicket;
+			cin >> newTicket;
+			rjd::add(&tickets, &ticketsCount, newTicket);
 		}
 			  break;
 		default:
