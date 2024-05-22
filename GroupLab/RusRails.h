@@ -23,6 +23,9 @@ public:
 	int getStart();
 	int getFinish();
 	int getTrain();
+	void setTrain(int x);
+	void setStart(int x);
+	void setFinish(int x);
 };
 
 class Route {
@@ -98,12 +101,12 @@ public:
 	int getPath();
 	bool setPath(std::vector<Route>* routes, int routesCount);
 	int getCurStation();
-	void changeCurStation(time_t curTime, std::vector<Route>* routes, int routesCount, std::vector<Station>* stations);
+	void changeCurStation(time_t curTime, std::vector<Route>* routes, int routesCount, std::vector<Station>* stations, std::vector<Ticket>* tickets, int *ticketCount);
 	bool setStartTime(time_t globalTime);
 	int getId() const;
 	int getArrivalTime() const;
 	int getStationId() const;
-	Train* getPasAndTime(std::vector<Ticket>* tickets, int ticketCount, std::vector<Station>* stations, int stationCount, std::vector<Route>* routes, int routesCount, int stationA, int stationB);
+	Train* getPasAndTime(std::vector<Ticket>* tickets, int ticketCount, std::vector<Station>* stations, int stationCount, std::vector<Route>* routes, int routesCount, int stationA, int stationB, time_t globalTime);
 };
 
 
@@ -123,7 +126,8 @@ namespace rjd {
 	void edit(std::vector<Station>* station, int n);
 	void print(std::vector<Station>* station, int n);
 
-	//void write(std::vector<Ticket>* tickets, int n);
+	void write(std::vector<Ticket>* tickets, int n);
+	void print(std::vector<Ticket>*tickets, int n);
 	void create(std::vector<Ticket>* tickets, int* ticketCount);
 	void read(std::vector<Ticket>* tickets, int* ticketCount);
 	void add(std::vector<Ticket>* tickets, int* ticketCount, Ticket newTicket);

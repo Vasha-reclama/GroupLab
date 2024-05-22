@@ -44,6 +44,7 @@ int main() {
 	}
 	tm* normalTime = localtime(&globalTime);
 	cout << normalTime->tm_year+1900<<" " << normalTime->tm_mon+1<<" " << normalTime->tm_mday<<" " << normalTime->tm_hour << endl;
+	rjd::read(&tickets, &ticketsCount);
 	
 	bool work0 = true;
 	while (work0) {
@@ -116,9 +117,10 @@ int main() {
 						out.write(reinterpret_cast<char*>(&globalTime), sizeof(time_t));
 						out.close();
 						for (int i = 0; i < trainsCount; i++) {
-							trains[i].changeCurStation(globalTime, &routes, routesCount, &stations);
+							trains[i].changeCurStation(globalTime, &routes, routesCount, &stations, &tickets, &ticketsCount);
 						}
 						rjd::write(&trains, trainsCount);
+						rjd::write(&tickets, ticketsCount);
 					}
 						  break;
 					default:
@@ -129,7 +131,7 @@ int main() {
 				case 2: {
 					bool work2 = true;
 					while (work2) {
-						cout << "1-Поезда 2-Маршруты 3-Станции" << endl;
+						cout << "1-Поезда 2-Маршруты 3-Станции 4-Вывести билеты" << endl;
 						int key2;
 						if (!(cin >> key2).good()) {
 							cout << "Syntax error" << endl;
@@ -247,6 +249,11 @@ int main() {
 							}
 						}
 						break;
+						case 4:
+						{
+							rjd::print(&tickets, ticketsCount);
+						}
+						break;
 						default:
 							work2 = false;
 							break;
@@ -351,7 +358,7 @@ int main() {
 					for (int k = 0; k < trainsCount; k++) {
 						if (trains[k].getId() == correct[i].getTrains()[j]) {
 							inside = true;
-							Train* temp = trains[k].getPasAndTime(&tickets, ticketsCount, &stations, stationCount, &routes, routesCount, stA, stB);
+							Train* temp = trains[k].getPasAndTime(&tickets, ticketsCount, &stations, stationCount, &routes, routesCount, stA, stB, globalTime);
 							fin.push_back(temp);
 							break;
 						}
@@ -378,7 +385,11 @@ int main() {
 				break;
 			}
 			Ticket newTicket;
+			newTicket.setTrain(trainId);
+			newTicket.setFinish(stB);
+			newTicket.setStart(stA);
 			cin >> newTicket;
+
 			rjd::add(&tickets, &ticketsCount, newTicket);
 		}
 			  break;

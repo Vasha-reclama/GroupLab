@@ -76,3 +76,14 @@ int Ticket::getTrain() {
 	return trainId;
 }
 
+void Ticket::setTrain(int x) {
+	trainId = x;
+}
+
+void Ticket::setStart(int x) {
+	startSt = x;
+}
+
+void Ticket::setFinish(int x) {
+	finish = x;
+}

@@ -7,7 +7,7 @@ using namespace std;
 namespace rjd {
     const char* filename = "tickets.dat";
 
-    void write(const vector<Ticket>* tickets, int n) {
+    void write(vector<Ticket>* tickets, int n) {
         ofstream out(filename, ios_base::binary);
         if (!out.is_open()) {
             cout << "Не удается открыть файл для записи." << endl;
@@ -16,6 +16,13 @@ namespace rjd {
         out.write(reinterpret_cast<const char*>(&n), sizeof(int));
         out.write(reinterpret_cast<const char*>(&(tickets->at(0))), sizeof(Ticket) * n);
         out.close();
+    }
+
+    void print(vector<Ticket>* tickets, int ticketCount) {
+        cout << ticketCount << endl;
+        for (int i = 0; i < ticketCount; i++) {
+            cout << tickets->at(i) << endl;
+        }
     }
 
     void read(std::vector<Ticket>* tickets, int* ticketCount) {

@@ -46,7 +46,7 @@ int Train::getCurStation() {
 	return curSt;
 }
 
-void Train::changeCurStation(time_t curTime, vector<Route>* routes, int routesCount, vector<Station>* stations) {
+void Train::changeCurStation(time_t curTime, vector<Route>* routes, int routesCount, vector<Station>* stations, vector<Ticket>* tickets, int *ticketCount) {
 	Route* temp=nullptr;
 	time_t pastTense=start;
 	for (int i = 0; i < routesCount; i++) {
@@ -136,6 +136,21 @@ void Train::changeCurStation(time_t curTime, vector<Route>* routes, int routesCo
 	}
 	start = curTime + 86400;
 	direction = true;
+	vector<int> forRemove;
+	for (int i = 0; i < *ticketCount; i++) {
+		if (tickets->at(i).getTrain() == id) {
+			forRemove.push_back(tickets->at(i).getId());
+		}
+	}
+	for (int i = 0; i < forRemove.size(); i++) {
+		for (int j = 0; j < *ticketCount; j++) {
+			if (forRemove[i] == tickets->at(j).getId()) {
+				tickets->erase(tickets->begin() + j);
+				(*ticketCount)--;
+				break;
+			}
+		}
+	}
 	
 }
 
@@ -224,7 +239,7 @@ bool Train::setPath(vector<Route>* routes, int routesCount) {
 	return 1;
 }
 
-Train* Train::getPasAndTime(vector<Ticket>* tickets, int ticketCount, vector<Station>* stations, int stationCount, vector<Route>* routes, int routesCount, int stationA, int stationB) {
+Train* Train::getPasAndTime(vector<Ticket>* tickets, int ticketCount, vector<Station>* stations, int stationCount, vector<Route>* routes, int routesCount, int stationA, int stationB, time_t globalTime) {
 	;
 	time_t pasTense = start;
 	Route* tempRoute=nullptr;
@@ -301,7 +316,7 @@ Train* Train::getPasAndTime(vector<Ticket>* tickets, int ticketCount, vector<Sta
 			}
 			else {
 				tm* normalTime = localtime(&pasTense);
-				if (curPas < limit) {
+				if (curPas < limit && pasTense>globalTime) {
 					cout << id << " " << normalTime->tm_year+1900 << " " << normalTime->tm_mon << " " << normalTime->tm_mday << " " << normalTime->tm_hour << " " << curPas << endl;
 					return this;
 				}
@@ -341,7 +356,7 @@ Train* Train::getPasAndTime(vector<Ticket>* tickets, int ticketCount, vector<Sta
 			}
 			else {
 				tm* normalTime = localtime(&pasTense);
-				if (curPas < limit) {
+				if (curPas < limit && pasTense>globalTime) {
 					cout << id << " " << normalTime->tm_year+1900 << " " << normalTime->tm_mon << " " << normalTime->tm_mday << " " << normalTime->tm_hour << " " << curPas << endl;
 					return this;
 				}
