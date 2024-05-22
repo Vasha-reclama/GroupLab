@@ -234,7 +234,7 @@ int main() {
 							}
 							break;
 							case 4: {
-								rjd::remove(&stations, &stationCount);
+								rjd::remove(&stations, &stationCount, &routes, routesCount);
 							}
 								  break;
 							case 5: {

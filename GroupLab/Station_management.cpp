@@ -68,7 +68,7 @@ namespace rjd {
 		write(station, *n);
 	}
 
-	void remove(vector<Station>* station, int* n) {
+	void remove(vector<Station>* station, int* n, vector<Route>*routes, int routesCount) {
 		print(station, *n);
 		cout << "enter id to remove" << endl;
 		int id = 0;
@@ -79,6 +79,14 @@ namespace rjd {
 		int x = -1;
 		for (int i = 0; i < *n; i++) {
 			if (station->at(i).getId() == id) {
+				for (int j = 0; j < routesCount; j++) {
+					for (int k = 0; j < routes->at(j).getStatinsCount(); j++) {
+						if (routes->at(j).getStations()[k] == id) {
+							cout << "cant remove station" << endl;
+							return;
+						}
+					}
+				}
 				x = i;
 				break;
 			}

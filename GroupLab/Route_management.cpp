@@ -200,6 +200,10 @@ namespace rjd {
 
 		for (int i = 0; i < *n; i++) {
 			if (routes->at(i).getId() == id) {
+				if (routes->at(i).getTrainsCount() > 0) {
+					cout << "Нельзя удалять маршруты, к которым прикрепленны поезда" << endl;
+					return;
+				}
 				x = i;
 				break;
 			}

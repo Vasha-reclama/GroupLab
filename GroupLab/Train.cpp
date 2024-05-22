@@ -302,7 +302,7 @@ Train* Train::getPasAndTime(vector<Ticket>* tickets, int ticketCount, vector<Sta
 			else {
 				tm* normalTime = localtime(&pasTense);
 				if (curPas < limit) {
-					cout << id << " " << normalTime->tm_year << " " << normalTime->tm_mon << " " << normalTime->tm_mday << " " << normalTime->tm_hour << " " << curPas << endl;
+					cout << id << " " << normalTime->tm_year+1900 << " " << normalTime->tm_mon << " " << normalTime->tm_mday << " " << normalTime->tm_hour << " " << curPas << endl;
 					return this;
 				}
 			}
@@ -342,7 +342,7 @@ Train* Train::getPasAndTime(vector<Ticket>* tickets, int ticketCount, vector<Sta
 			else {
 				tm* normalTime = localtime(&pasTense);
 				if (curPas < limit) {
-					cout << id << " " << normalTime->tm_year << " " << normalTime->tm_mon << " " << normalTime->tm_mday << " " << normalTime->tm_hour << " " << curPas << endl;
+					cout << id << " " << normalTime->tm_year+1900 << " " << normalTime->tm_mon << " " << normalTime->tm_mday << " " << normalTime->tm_hour << " " << curPas << endl;
 					return this;
 				}
 			}
