@@ -74,7 +74,7 @@ namespace rjd {
             cout << "Syntax error" << endl;
             return;
         }
-        auto it = remove_if(tickets->begin(), tickets->end(), [ticketId](Ticket& t) { return t.getId() == ticketId; });//ниху€ себе сложна€ конструкци€, € так писать не умею
+        auto it = remove_if(tickets->begin(), tickets->end(), [ticketId](Ticket& t) { return t.getId() == ticketId; });
         if (it != tickets->end()) {
             tickets->erase(it, tickets->end());
             --(*ticketCount);
